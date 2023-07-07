@@ -14,5 +14,5 @@ docker-compose down
 docker-compose \
   -f docker-compose.yaml \
   -f docker-compose.override.yaml \
-  -f docker-compose.link.yaml
+  -f docker-compose.link.yaml \
   up $@
