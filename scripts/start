@@ -1,4 +1,9 @@
 #!/usr/bin/env sh
+if [ -z "$(docker network ls --filter name=^ffc-tcg$ --format={{.Name}})" ]; then
+  echo "Creating ffc-tcg Docker network"
+  docker network create ffc-tcg
+fi
+
 set -e
 projectRoot="$(a="/$0"; a=${a%/*}; a=${a:-.}; a=${a#/}/; cd "$a/.." || return; pwd)"
 
@@ -9,4 +14,5 @@ docker-compose down
 docker-compose \
   -f docker-compose.yaml \
   -f docker-compose.override.yaml \
+  -f docker-compose.link.yaml
   up $@
