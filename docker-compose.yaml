@@ -1,10 +1,10 @@
 services:
-  ffc-template-node:
+  ffc-tcg-apply:
     build:
       context: .
       target: production
-    image: ffc-template-node
-    container_name: ffc-template-node
+    image: ffc-tcg-apply
+    container_name: ffc-tcg-apply
     environment:
-      APPINSIGHTS_CLOUDROLE: ffc-template-node-local
+      APPINSIGHTS_CLOUDROLE: ffc-tcg-apply-local
       APPINSIGHTS_CONNECTIONSTRING: ${APPINSIGHTS_CONNECTIONSTRING}
