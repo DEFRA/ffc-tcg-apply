@@ -26,6 +26,7 @@ container:
   limitMemory: 100Mi
   limitCpu: 100m
   port: 3055
+  messageQueueHost: namespace.servicebus.windows.net
 
 livenessProbe:
   path: /healthz

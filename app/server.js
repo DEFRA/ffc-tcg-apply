@@ -1,15 +1,16 @@
 require('./insights').setup()
 const Hapi = require('@hapi/hapi')
 
-const server = Hapi.server({
-  port: process.env.PORT
-})
+const createServer = async () => {
+  const server = Hapi.server({
+    port: process.env.PORT
+  })
 
-const routes = [].concat(
-  require('./routes/healthy'),
-  require('./routes/healthz')
-)
+  await server.register(require('@hapi/inert'))
+  await server.register(require('./plugins/router'))
+  await server.register(require('./plugins/views'))
 
-server.route(routes)
+  return server
+}
 
-module.exports = server
+module.exports = { createServer }
