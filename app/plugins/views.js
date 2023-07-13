@@ -35,8 +35,8 @@ module.exports = {
       appVersion: version,
       assetPath: '/static',
       govukAssetPath: '/assets',
-      serviceName: 'ffc-tcg-portal',
-      pageTitle: 'ffc-tcg-portal'
+      serviceName: 'ffc-tcg-apply',
+      pageTitle: 'ffc-tcg-apply'
     }
   }
 }
