@@ -27,6 +27,9 @@ container:
   limitCpu: 100m
   port: 3055
   messageQueueHost: namespace.servicebus.windows.net
+  eligibilityTopicAddress: ffc-tcg-eligibility-request
+  eligibilitySubscriptionAddress: ffc-tcg-eligibility
+  eligibilityResponseQueueAddress: ffc-tcg-eligibility-response
 
 livenessProbe:
   path: /healthz

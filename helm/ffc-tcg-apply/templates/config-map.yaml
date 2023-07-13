@@ -4,6 +4,15 @@ data:
   NODE_ENV: {{ quote .Values.environment }}
   PORT: {{ quote .Values.container.port }}
   APPINSIGHTS_CLOUDROLE: {{ quote .Values.name }}
+  MESSAGE_QUEUE_HOST: {{ quote .Values.container.messageQueueHost }}
+  {{- if and (.Values.environmentCode) (not .Values.pr) }}
+  ELIGIBILITY_TOPIC_ADDRESS: {{ .Values.container.eligibilityTopicAddress }}-{{ .Values.environmentCode }}
+  ELIGIBILITYRESPONSE_QUEUE_ADDRESS: {{ .Values.container.eligibilityResponseQueueAddress }}-{{ .Values.environmentCode }}
+  {{ else }}
+  ELIGIBILITY_TOPIC_ADDRESS: {{ quote .Values.container.eligibilityTopicAddress }}
+  ELIGIBILITYRESPONSE_QUEUE_ADDRESS: {{ quote .Values.container.eligibilityResponseQueueAddress }}
+  {{- end }}
+  ELIGIBILITY_SUBSCRIPTION_ADDRESS: {{ quote .Values.container.eligibilitySubscriptionAddress }}
   {{- if .Values.pr }}
   REDIRECT_URL: https://{{ .Values.ingress.endpoint }}-{{ .Values.pr }}.{{ .Values.ingress.server }}
   {{ else }}
