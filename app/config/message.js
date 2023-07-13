@@ -9,12 +9,15 @@ const schema = Joi.object({
     useCredentialChain: Joi.bool().default(false),
     appInsights: Joi.object()
   },
+  eligibilityTopic: {
+    address: Joi.string()
+  },
   eligibilitySubscription: {
     address: Joi.string(),
     topic: Joi.string(),
     type: Joi.string().default('subscription')
   },
-  dataQueue: {
+  eligibilityQueue: {
     address: Joi.string()
   }
 })
@@ -27,12 +30,15 @@ const config = {
     useCredentialChain: process.env.NODE_ENV === PRODUCTION,
     appInsights: process.env.NODE_ENV === PRODUCTION ? require('applicationinsights') : undefined
   },
+  eligibilityTopic: {
+    address: process.env.ELIGIBILITY_TOPIC_ADDRESS
+  },
   eligibilitySubscription: {
     address: process.env.ELIGIBILITY_SUBSCRIPTION_ADDRESS,
     topic: process.env.ELIGIBILITY_TOPIC_ADDRESS,
     type: 'subscription'
   },
-  dataQueue: {
+  eligibilityQueue: {
     address: process.env.ELIGIBILITY_QUEUE_ADDRESS
   }
 }
@@ -45,10 +51,12 @@ if (result.error) {
   throw new Error(`The message config is invalid. ${result.error.message}`)
 }
 
-const dataSubscription = { ...result.value.messageQueue, ...result.value.dataSubscription }
-const dataQueue = { ...result.value.messageQueue, ...result.value.dataQueue }
+const eligibilityTopic = { ...result.value.messageQueue, ...result.value.eligibilityTopic }
+const eligibilitySubscription = { ...result.value.messageQueue, ...result.value.eligibilitySubscription }
+const eligibilityQueue = { ...result.value.messageQueue, ...result.value.eligibilityQueue }
 
 module.exports = {
-  dataSubscription,
-  dataQueue
+  eligibilitySubscription,
+  eligibilityQueue,
+  eligibilityTopic
 }
