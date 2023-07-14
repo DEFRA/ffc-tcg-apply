@@ -52,6 +52,8 @@ ingress:
   endpoint: ffc-tcg-apply
   server: example.com
 
+aadPodIdentity: true
+
 azureIdentity:
   clientID: not-a-real-clientID
   resourceID: not-a-real-resourceID
