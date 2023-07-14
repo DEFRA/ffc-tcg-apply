@@ -1,4 +1,4 @@
-const { sendMessage } = require('../messaging')
+const { processEligibility } = require('../processing/process-eligibility')
 
 module.exports = [{
   method: 'GET',
@@ -11,8 +11,8 @@ module.exports = [{
   path: '/start',
   handler: async (request, h) => {
     try {
-      await sendMessage()
-      return h.view('confirmation')
+      const response = await processEligibility()
+      return h.view('confirmation', { referenceNumber: response.reference })
     } catch (err) {
       console.error(err)
     }
