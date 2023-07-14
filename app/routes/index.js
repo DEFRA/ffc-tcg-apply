@@ -7,12 +7,12 @@ module.exports = [{
     return h.view('index')
   }
 }, {
-  method: 'POST',
-  path: '/submit',
+  method: 'GET',
+  path: '/start',
   handler: async (request, h) => {
     try {
       await sendMessage()
-      return h.redirect('confirmation')
+      return h.view('confirmation')
     } catch (err) {
       console.error(err)
     }
