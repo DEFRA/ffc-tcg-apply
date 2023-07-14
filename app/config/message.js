@@ -39,7 +39,7 @@ const config = {
     type: 'subscription'
   },
   eligibilityQueue: {
-    address: process.env.ELIGIBILITY_QUEUE_ADDRESS
+    address: process.env.ELIGIBILITYRESPONSE_QUEUE_ADDRESS
   }
 }
 

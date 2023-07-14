@@ -1,4 +1,5 @@
 const { sendMessage } = require('../messaging')
+
 module.exports = [{
   method: 'GET',
   path: '/',
@@ -10,7 +11,7 @@ module.exports = [{
   path: '/submit',
   handler: async (request, h) => {
     try {
-      await sendMessage({ message: 'test', value: 1 })
+      await sendMessage()
       return h.redirect('confirmation')
     } catch (err) {
       console.error(err)
