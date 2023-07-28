@@ -10,7 +10,14 @@ console.log(`Running webpack in ${isDev ? 'development' : 'production'} mode`)
 module.exports = {
   entry: {
     core: [
-      './app/frontend/css/index.js'
+      './app/frontend/css/index.js',
+      './app/frontend/images/android-chrome-192x192.png',
+      './app/frontend/images/android-chrome-512x512.png',
+      './app/frontend/images/apple-touch-icon.png',
+      './app/frontend/images/defra-logo-black.png',
+      './app/frontend/images/defra-logo-white.png',
+      './app/frontend/images/favicon.ico',
+      './app/frontend/images/search-icon.png'
     ]
   },
   mode: isDev ? 'development' : 'production',
