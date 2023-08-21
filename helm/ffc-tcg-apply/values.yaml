@@ -30,6 +30,13 @@ container:
   eligibilityTopicAddress: ffc-tcg-eligibility-request
   eligibilitySubscriptionAddress: ffc-tcg-eligibility
   eligibilityResponseQueueAddress: ffc-tcg-eligibility-response
+  defraIdEnabled: true
+  defraIdWellKnownUrl: not-a-real-url
+  defraIdClientId: not-a-real-clientID
+  defraIdClientSecret: not-a-real-clientSecret
+  defraIdServiceId: not-a-real-serviceID
+  defraIdPolicy: not-a-real-policy
+  defraIdRedirectUrl: sign-in-oidc
 
 livenessProbe:
   path: /healthz

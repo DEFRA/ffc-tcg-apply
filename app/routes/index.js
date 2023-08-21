@@ -1,13 +1,14 @@
+const { GET } = require('../constants/http-verbs')
 const { processEligibility } = require('../processing/process-eligibility')
 
 module.exports = [{
-  method: 'GET',
+  method: GET,
   path: '/',
   handler: (request, h) => {
     return h.view('index')
   }
 }, {
-  method: 'GET',
+  method: GET,
   path: '/start',
   handler: async (request, h) => {
     try {

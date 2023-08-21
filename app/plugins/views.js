@@ -1,5 +1,6 @@
 const path = require('path')
 const nunjucks = require('nunjucks')
+const { serverConfig } = require('../config')
 const { version } = require('../../package.json')
 
 module.exports = {
@@ -35,8 +36,8 @@ module.exports = {
       appVersion: version,
       assetPath: '/static',
       govukAssetPath: '/assets',
-      serviceName: 'ffc-tcg-apply',
-      pageTitle: 'ffc-tcg-apply'
+      serviceName: serverConfig.serviceName,
+      pageTitle: `${serverConfig.serviceName} - GOV.UK`
     }
   }
 }

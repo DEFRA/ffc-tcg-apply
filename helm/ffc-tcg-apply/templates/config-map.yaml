@@ -14,8 +14,14 @@ data:
   {{- end }}
   ELIGIBILITY_SUBSCRIPTION_ADDRESS: {{ quote .Values.container.eligibilitySubscriptionAddress }}
   {{- if .Values.pr }}
-  REDIRECT_URL: https://{{ .Values.ingress.endpoint }}-{{ .Values.pr }}.{{ .Values.ingress.server }}
+  DEFRA_ID_ENABLED: {{ quote .Values.container.defraIdEnabled }}
+  DEFRA_ID_WELL_KNOWN_URL: {{ quote .Values.container.defraIdWellKnownUrl }}
+  DEFRA_ID_CLIENT_ID: {{ quote .Values.container.defraIdClientId }}  
+  DEFRA_ID_SERVICE_ID: {{ quote .Values.container.defraIdServiceId }}
+  DEFRA_ID_POLICY: {{ quote .Values.container.defraIdPolicy }}
+  {{- if .Values.pr }}
+  DEFRA_ID_REDIRECT_URL: https://{{ .Values.ingress.endpoint }}-{{ .Values.pr }}.{{ .Values.ingress.server }}/{{ .Values.container.defraIdRedirectUrl }}
   {{ else }}
-  REDIRECT_URL: https://{{ .Values.ingress.endpoint }}.{{ .Values.ingress.server }}
+  DEFRA_ID_REDIRECT_URL: https://{{ .Values.ingress.endpoint }}.{{ .Values.ingress.server }}/{{ .Values.container.defraIdRedirectUrl }}
   {{- end }}
 {{- end -}}
