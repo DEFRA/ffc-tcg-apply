@@ -1,6 +1,6 @@
 {
   "name": "ffc-tcg-apply",
-  "version": "0.1.10",
+  "version": "0.2.0",
   "description": "FFC TCG Apply",
   "homepage": "https://github.com/DEFRA/ffc-tcg-apply",
   "main": "app/index.js",
