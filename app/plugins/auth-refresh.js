@@ -11,7 +11,7 @@ module.exports = {
           return h.continue
         }
 
-        if(request.path.startsWith('/static/')) {
+        if (request.path.startsWith('/static/')) {
           return h.continue
         }
 
