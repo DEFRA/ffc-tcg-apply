@@ -1,5 +1,7 @@
+const { GET } = require('../constants/http-verbs')
+
 module.exports = [{
-  method: 'GET',
+  method: GET,
   path: '/assets/{path*}',
   options: {
     auth: false,
@@ -16,7 +18,7 @@ module.exports = [{
     }
   }
 }, {
-  method: 'GET',
+  method: GET,
   path: '/govuk-frontend/govuk/{path*}',
   options: {
     auth: false,
@@ -33,7 +35,7 @@ module.exports = [{
     }
   }
 }, {
-  method: 'GET',
+  method: GET,
   path: '/static/{path*}',
   options: {
     auth: false,

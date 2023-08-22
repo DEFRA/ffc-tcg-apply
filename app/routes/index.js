@@ -1,20 +1,20 @@
-const { processEligibility } = require('../processing/process-eligibility')
+const { AUTH_COOKIE_NAME, AUTH_REFRESH_COOKIE_NAME } = require('../constants/cookies')
+const { GET } = require('../constants/http-verbs')
+const { authConfig } = require('../config')
 
 module.exports = [{
-  method: 'GET',
+  method: GET,
   path: '/',
   handler: (request, h) => {
-    return h.view('index')
-  }
-}, {
-  method: 'GET',
-  path: '/start',
-  handler: async (request, h) => {
-    try {
-      const response = await processEligibility()
-      return h.view('confirmation', { referenceNumber: response.reference })
-    } catch (err) {
-      console.error(err)
+    if (request.query.token) {
+      console.log('Setting auth cookie')
+      h.state(AUTH_COOKIE_NAME, request.query.token, authConfig.cookieOptions)
     }
+
+    if (request.query.refreshToken) {
+      console.log('Setting refresh cookie')
+      h.state(AUTH_REFRESH_COOKIE_NAME, request.query.refreshToken, authConfig.cookieOptions)
+    }
+    return h.view('index')
   }
 }]

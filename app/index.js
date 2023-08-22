@@ -1,3 +1,5 @@
+require('./insights').setup()
+require('log-timestamp')
 const { createServer } = require('./server')
 
 const init = async () => {

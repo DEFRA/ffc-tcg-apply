@@ -1,42 +1,62 @@
 {% extends '_layout.njk' %}
 
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
 {% block content %}
- <div class="govuk-width-container">
-  <a href="#" class="govuk-link">Home </a>
-  <main class="govuk-main-wrapper">
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
-        <h1 class="govuk-heading-xl">Apply for Farming scheme</h1>
-      </div>
-      <div class="govuk-grid-column-two-thirds">
-        <p class="govuk-body">Use this service to apply for Farming scheme.</p>
-        <p class="govuk-body">You can use this service to:</p>
-        <ul class="govuk-list govuk-list--bullet">
-          <li>apply for farming scheme</li>
-        </ul>
-        <p class="govuk-body">You can register yourself or on behalf of someone else.</p>
-        <a href="/start" class="govuk-button govuk-button--start">Start now
-        <svg class="govuk-button__start-icon" xmlns="http://www.w3.org/2000/svg" width="17.5" height="19" viewBox="0 0 33 40" aria-hidden="true" focusable="false">
-            <path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z" />
-          </svg>
-        </a>
-      </div>
-      <div class="govuk-grid-column-one-third">
-        <hr class="govuk-section-break govuk-section-break--visible ">
-        <h2 class="govuk-heading-s govuk-!-padding-top-3">Related content</h2>
-        <p class="govuk-body"><a href="#" class="govuk-link">DEFRA Farming and Countryside Programme</a>.</p>
-      </div>
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-l">Sustainable Farming Incentive</span>
+      <h1 class="govuk-heading-l">Apply for sustainable farming funding</h1>
 
-      <div class="govuk-grid-column-two-thirds govuk-!-padding-top-6">
-        <h2 class="govuk-heading-m">Before you start</h2>
-        <p class="govuk-body">You'll need to provide some documents including x, y and z.</p>
-        <h3 class="govuk-heading-s">If you need help using this service</h3>
-        <p class="govuk-body">Contact <a href="#" class="govuk-link">the support team</a> for assistance.</p>
-      </div>  
+      <p class="govuk-body">Use this service to apply for a 3-year agreement through the Sustainable Farming Incentive.</p>
+
+      <p class="govuk-body">Only apply if:</p>
+      <ul class="govuk-list govuk-list--bullet">
+        <li>Your farm business is eligible to claim Basic Payment Scheme (BPS)</li>
+        <li>Your farm is registered in England</li>
+        <li>You have management control of the land</li>
+      </ul>
+
+      <p class="govuk-body">You can use this service to work out how much you will be paid based on the amount of work you do.</p>
+
+      <p class="govuk-body">You can save the application at any time during the application process.</p>
+
+      <p class="govuk-body">Read more about:</p>
+      <ul class="govuk-list govuk-list--bullet">
+        <li>
+          <a class="govuk-link" href="#">eligibility rules</a>
+        </li>
+        <li>
+          <a class="govuk-link" href="#">how to qualify for funding</a>
+        </li>
+        <li>
+          <a class="govuk-link" href="#">funding rates</a>
+        </li>
+      </ul>
+
+      {{ govukButton({
+        classes: "govuk-!-margin-top-2 govuk-!-margin-bottom-5",
+        href: "/sign-in",
+        isStartButton: true,
+        text: "Start now"
+      }) }}
+
+      <p class="govuk-body">or</p>
+
+      <p class="govuk-body">
+        <a class="govuk-link" id="continue-link" href="#">Continue a saved application</a>
+      </p>
+
+      <h2 class="govuk-heading-m">Before you start</h2>
+
+      <p class="govuk-body">You should have:</p>
+      <ul class="govuk-list govuk-list--bullet">
+        <li>read about how Sustainable Farming Incentive funding works</li>
+        <li>decided what things you will do to make your farm more sustainable that qualify for funding</li>
+        <li>decided what land to carry out the work on</li>
+        <li>updated your land with the Rural Payments Agency (RPA)</li>
+      </ul>
+
     </div>
-  </main>
-</div>
-
-
-    
+  </div>
 {% endblock %}
