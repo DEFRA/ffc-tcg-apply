@@ -5,7 +5,7 @@ const { sendMessage, receiveMessage } = require('../messaging')
 
 const processEligibility = async () => {
   const sessionId = uuidv4()
-  const request = { message: 'test' }
+  const request = { message: 'test', reference: '1' }
   await sendMessage(request, sessionId)
   console.info('Data request sent:', util.inspect(request, false, null, true))
   const response = await receiveMessage(sessionId, eligibilityQueue)
