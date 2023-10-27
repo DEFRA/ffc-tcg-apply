@@ -7,8 +7,8 @@ const routes = [].concat(
   require('../routes/sign-in'),
   require('../routes/sign-out'),
   require('../routes/check-eligibility'),
-  require('../routes/confirmation')
-
+  require('../routes/confirmation'),
+  require('../routes/eligible-organisations')
 )
 
 module.exports = {

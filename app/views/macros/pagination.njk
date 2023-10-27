@@ -1,0 +1,41 @@
+{% macro pager(page, totalPages, limit, total, url, hasNext, hasPrevious, showNextEllipsis, showPreviousEllipsis) %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <p class="govuk-body govuk-body-s">
+        {% if hasPrevious %}
+          <a href="{{ url }}?page={{ page - 1 }}" class="govuk-link govuk-link--no-underline govuk-link--no-visited-state govuk-!-margin-right-4">« Previous</a>
+          {% if page - 1 != 1 %}
+            <a href="{{ url }}?page=1" class="govuk-link govuk-link--no-underline govuk-link--no-visited-state govuk-!-margin-right-4">1</a>
+          {% endif %}
+          {% if showPreviousEllipsis %}
+            <span class="govuk-!-margin-right-4">...</span>
+          {% endif %}
+          <a href="{{ url }}?page={{ page - 1 }}" class="govuk-link govuk-link--no-underline govuk-link--no-visited-state govuk-!-margin-right-4">{{ page - 1 }}</a>
+        {% else %}
+          <span class="govuk-!-margin-right-4">« Previous</span>
+        {% endif %}
+        <strong class="govuk-!-margin-right-4">{{ page }}</strong>
+        {% if hasNext %}
+          <a href="{{ url }}?page={{ page + 1 }}" class="govuk-link govuk-link--no-underline govuk-link--no-visited-state govuk-!-margin-right-4">{{ page + 1 }}</a>
+          {% if showNextEllipsis %}
+            <span class="govuk-!-margin-right-4">...</span>
+          {% endif %}
+          {% if page + 1 != totalPages %}
+            <a href="{{ url }}?page={{ totalPages }}" class="govuk-link govuk-link--no-underline govuk-link--no-visited-state govuk-!-margin-right-4">{{ totalPages }}</a>
+          {% endif %}
+          <a href="{{ url }}?page={{ page + 1 }}" class="govuk-link govuk-link--no-underline govuk-link--no-visited-state">Next »</a>
+        {% else %}
+          <span>Next »</span>
+        {% endif %}
+      </p>
+    </div>
+
+    <div class="govuk-grid-column-one-third text-align-right">
+      {% if page === 1 %}
+        <p class="govuk-body-s">Showing 1 - {{ limit * page }} of {{ total }} organisations</p>
+      {% else %}
+        <p class="govuk-body-s">Showing {{ ((page - 1) * limit) + 1 }} - {{ page * limit if total > (page * limit) else total }} of {{ total }} organisations</p>
+      {% endif %}
+    </div>
+  </div>
+{% endmacro %}

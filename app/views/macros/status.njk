@@ -1,0 +1,5 @@
+{% from "govuk/components/tag/macro.njk" import govukTag %}
+
+{% macro taskLink(status) %}
+  <strong class="govuk-tag {{ 'govuk-tag--yellow' if status === 'In Progress'}} {{ 'govuk-tag--blue' if status === 'Submitted'}} {{ 'govuk-tag--grey' if status === 'Withdrawn' or status === 'Deleted' }}">{{status}}</strong>
+{% endmacro %}
