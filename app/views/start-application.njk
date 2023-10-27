@@ -1,0 +1,97 @@
+{% extends '_layout.njk' %}
+{% set mainClasses = "govuk-main-wrapper--auto-spacing" %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/tag/macro.njk" import govukTag %}
+{# {% from "macros/status.njk" import taskLink %} #}
+
+{% block beforeContent %}
+  {{ govukBackLink({
+        text: "Back",
+        href: "/login",
+        attributes: {
+          id: "back"
+        }
+      }) 
+    }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form method="POST" action="/start-application" novalidate>
+        <input type="hidden" name="crumb" value="{{crumb}}"/>
+        <input type="hidden" name="sbi" value="{{ organisation.sbi }}"/>
+        <div class="govuk-form-group">
+          <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+              <h1 class="govuk-fieldset__heading">Sustainable farming funding applications for this organisation</h1>
+            </legend>
+            <div class="govuk-form-group">
+              <h2 class="govuk-heading-m">{{ partyName }}</h2>
+              <ul class="govuk-list">
+                <li><strong>SBI number:</strong> {{ id }}</li>
+                <li><strong>Address:</strong> Parliament Hill Fields, Highgate Rd, Highgate, NW5 1QR</li>
+              </ul>
+            </div>
+          </div>
+          {{ govukButton({
+            text: "Start new application",
+            attributes: {
+              id: "start-application"
+            }
+          }) }}
+        </form>
+      </div>
+    </div>
+
+    {% if applications.length > 0 %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+        <hr class="govuk-section-break govuk-section-break--xl govuk-section-break--visible">
+        <table class="govuk-table">
+          <caption class="govuk-table__caption govuk-table__caption--m">Applications</caption>
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th scope="col" class="govuk-table__header">Application</th>
+              <th scope="col" class="govuk-table__header">Year</th>
+              <th scope="col" class="govuk-table__header">Status</th>
+              <th scope="col" class="govuk-table__header"></th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+            {% for application in applications|sort(true, false, 'updatedAtFormatted') %}
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">{{ application.applicationId }}</td>
+              <td class="govuk-table__cell">{{ application.year }}</td>
+
+              <td class="govuk-table__cell">
+                {{ application.processStatusDescription }}
+              </td>
+
+              <td class="govuk-table__cell">
+                {% if agreement.status.status === 'In Progress' %}
+                  <form method="POST" action="/start-application" novalidate>
+                    <input type="hidden" name="crumb" value="{{ crumb }}"/>
+                    <input type="hidden" name="sbi" value="{{ organisation.sbi }}"/>
+                    <input type="hidden" name="agreementNumber" value="{{ agreement.agreementNumber }}"/>
+                    <button class="govuk-button-link govuk-!-font-size-19" data-module="govuk-button">
+                      Continue application
+                    </button>
+                  </form>
+                {% elif agreement.status.status === 'Submitted' %}
+                  <button class="govuk-button-link govuk-!-font-size-19" data-module="govuk-button">
+                    View application
+                  </button>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        </div>
+      </div>
+    {% endif %}
+  {% endblock %}
