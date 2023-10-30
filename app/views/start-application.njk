@@ -72,14 +72,15 @@
               </td>
 
               <td class="govuk-table__cell">
-                {% if agreement.status.status === 'In Progress' %}
+                {% if application.processStatusDescription !== 'Withdrawn' %}
                   <form method="POST" action="/start-application" novalidate>
                     <input type="hidden" name="crumb" value="{{ crumb }}"/>
                     <input type="hidden" name="sbi" value="{{ organisation.sbi }}"/>
                     <input type="hidden" name="agreementNumber" value="{{ agreement.agreementNumber }}"/>
-                    <button class="govuk-button-link govuk-!-font-size-19" data-module="govuk-button">
+                    <a href="/task-list">Continue Application</a>
+                    {# <button class="govuk-button-link govuk-!-font-size-19" data-module="govuk-button">
                       Continue application
-                    </button>
+                    </button> #}
                   </form>
                 {% elif agreement.status.status === 'Submitted' %}
                   <button class="govuk-button-link govuk-!-font-size-19" data-module="govuk-button">
