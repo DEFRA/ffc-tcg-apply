@@ -10,8 +10,9 @@ const routes = [].concat(
   require('../routes/confirmation'),
   require('../routes/eligible-organisations'),
   require('../routes/start-application'),
-  require('../routes/task-list')
-
+  require('../routes/task-list'),
+  require('../routes/check-land-details'),
+  require('../routes/confirm-management-control')
 )
 
 module.exports = {
