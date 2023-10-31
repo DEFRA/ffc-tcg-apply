@@ -9,15 +9,16 @@ projectRoot="$(a="/$0"; a=${a%/*}; a=${a:-.}; a=${a#/}/; cd "$a/.." || return; p
 
 cd "${projectRoot}"
 
-mkdir -p .ssh
+mkdir -p .ssl
 
-if [ ! -f .ssh/ssh_rsa_key ]; then
-  echo "Generating SSH keys"
-  ssh-keygen -t rsa -b 4096 -f .ssh/ssh_rsa_key < /dev/null
+if [ ! -f .ssl/rsa_key.pem ]; then
+  echo "Generating keys"
+  openssl genpkey -out .ssl/rsa_key.pem -algorithm RSA -pkeyopt rsa_keygen_bits:4096 < /dev/null
+  openssl rsa -in .ssl/rsa_key.pem -pubout -out .ssl/rsa_key.pub < /dev/null
 fi
 
-export DEV_AUTH_PRIVATE_KEY=$(cat .ssh/ssh_rsa_key)
-export DEV_AUTH_PUBLIC_KEY=$(cat .ssh/ssh_rsa_key.pub)
+export DEV_AUTH_PRIVATE_KEY=$(cat .ssl/rsa_key.pem)
+export DEV_AUTH_PUBLIC_KEY=$(cat .ssl/rsa_key.pub)
 
 docker-compose down
 
