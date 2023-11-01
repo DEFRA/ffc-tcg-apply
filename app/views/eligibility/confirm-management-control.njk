@@ -35,6 +35,8 @@
       <p class="govuk-body"> {{ contentDescription }} </p>
       <form method="POST" action="/confirm-management-control" novalidate>
         <input type="hidden" name="crumb" value="{{crumb}}"/>
+        <input type="hidden" name="applicationId" value="{{applicationId}}"/>
+
 
             {{ govukRadios({
               name: "CONFIRM_ELIGIBILITY_TO_APPLY",

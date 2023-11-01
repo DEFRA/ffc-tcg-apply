@@ -11,8 +11,9 @@ module.exports = [{
   path: '/task-list',
   options: { auth: { strategy: 'jwt', scope: [USER] } },
   handler: async (request, h) => {
+    const applicationId = request.query.id
     if (request.auth.isAuthenticated) {
-      const applicationSummary = await Wreck.get('http://ffc-tcg-api-gateway:3004/applications/status/142', WRECK_OPTIONS())
+      const applicationSummary = await Wreck.get(`http://ffc-tcg-api-gateway:3004/applications/status/${applicationId}`, WRECK_OPTIONS())
       const sectionStatus = [...new Set(applicationSummary.payload.status.forms.map(form => form.formDetails.compileStatus))]
 
       return h.view('task-list', {
@@ -20,7 +21,7 @@ module.exports = [{
         applicationStatus: applicationSummary.payload.status.processStatusDescription,
         section: {
           name: applicationSummary.payload.status.forms[0].formDetails.formName,
-          url: applicationSummary.payload.status.forms[0].formDetails.routerUrl,
+          url: `${applicationSummary.payload.status.forms[0].formDetails.routerUrl}?id=${applicationId}`,
           status: sectionStatus.length > 1 ? 'In progress' : sectionStatus[0]
         },
         ...applicationSummary.payload

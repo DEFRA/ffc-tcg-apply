@@ -12,9 +12,11 @@ module.exports = [{
   options: { auth: { strategy: 'jwt', scope: [USER] } },
   handler: async (request, h) => {
     if (request.auth.isAuthenticated) {
-      const form = await Wreck.get('http://ffc-tcg-api-gateway:3004/forms/AGREEMENT_NAME/142', WRECK_OPTIONS())
+      const applicationId = request.query.id
+      const form = await Wreck.get(`http://ffc-tcg-api-gateway:3004/forms/AGREEMENT_NAME/${applicationId}`, WRECK_OPTIONS())
 
       return h.view('eligibility/agreement-name', {
+        applicationId,
         contentTitle: form.payload.formContent.description,
         contentDescription: form.payload.formContent.fieldSets[0].fields[0].label.en,
         formCode: form.payload.formContent.fieldSets[0].fields[1].code
@@ -34,7 +36,8 @@ module.exports = [{
   options: {
     validate: {
       payload: Joi.object({
-        AGREEMENT_NAME: Joi.string().required()
+        AGREEMENT_NAME: Joi.string().required(),
+        applicationId: Joi.string().required()
       }),
       failAction: async (request, h, _error) => {
         return h.redirect('/agreement-name', {
@@ -44,7 +47,9 @@ module.exports = [{
     }
   },
   handler: async (request, h) => {
-    await Wreck.post('http://ffc-tcg-api-gateway:3004/forms/submit/AGREEMENT_NAME/142', WRECK_OPTIONS({ ...request.payload }))
-    return h.redirect('/task-list')
+    const applicationId = request.payload.applicationId
+    const AGREEMENT_NAME = request.payload.AGREEMENT_NAME
+    await Wreck.post(`http://ffc-tcg-api-gateway:3004/forms/submit/AGREEMENT_NAME/${applicationId}`, WRECK_OPTIONS({ AGREEMENT_NAME }))
+    return h.redirect(`/task-list?id=${applicationId}`)
   }
 }]

@@ -35,6 +35,8 @@
       <p class="govuk-body"> {{ contentDescription }} </p>
       <form method="POST" action="/agreement-name" novalidate>
         <input type="hidden" name="crumb" value="{{crumb}}"/>
+        <input type="hidden" name="applicationId" value="{{applicationId}}"/>
+
 
 
           {{ govukInput({

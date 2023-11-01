@@ -35,6 +35,7 @@
       <p class="govuk-body"> {{ contentDescription }} </p>
       <form method="POST" action="/check-land-details" novalidate>
         <input type="hidden" name="crumb" value="{{crumb}}"/>
+        <input type="hidden" name="applicationId" value="{{applicationId}}"/>
 
             {{ govukRadios({
               name: "IS_LAND_UPTODATE",

@@ -62,7 +62,7 @@
             </tr>
           </thead>
           <tbody class="govuk-table__body">
-            {% for application in applications|sort(true, false, 'updatedAtFormatted') %}
+            {% for application in applications|sort(true, false, 'applicationId') %}
             <tr class="govuk-table__row">
               <td class="govuk-table__cell">{{ application.applicationId }}</td>
               <td class="govuk-table__cell">{{ application.year }}</td>
@@ -77,11 +77,11 @@
                     <input type="hidden" name="crumb" value="{{ crumb }}"/>
                     <input type="hidden" name="sbi" value="{{ organisation.sbi }}"/>
                     <input type="hidden" name="agreementNumber" value="{{ agreement.agreementNumber }}"/>
-                    <a href="/task-list">Continue Application</a>
                     {# <button class="govuk-button-link govuk-!-font-size-19" data-module="govuk-button">
                       Continue application
                     </button> #}
                   </form>
+                    <a href="/task-list?id={{ application.applicationId }}">Continue Application</a>
                 {% elif agreement.status.status === 'Submitted' %}
                   <button class="govuk-button-link govuk-!-font-size-19" data-module="govuk-button">
                     View application

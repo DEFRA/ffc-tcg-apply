@@ -12,9 +12,11 @@ module.exports = [{
   options: { auth: { strategy: 'jwt', scope: [USER] } },
   handler: async (request, h) => {
     if (request.auth.isAuthenticated) {
-      const form = await Wreck.get('http://ffc-tcg-api-gateway:3004/forms/CONFIRM_ELIGIBILITY_TO_APPLY/142', WRECK_OPTIONS())
+      const applicationId = request.query.id
+      const form = await Wreck.get(`http://ffc-tcg-api-gateway:3004/forms/CONFIRM_ELIGIBILITY_TO_APPLY/${applicationId}`, WRECK_OPTIONS())
 
       return h.view('eligibility/confirm-management-control', {
+        applicationId,
         contentTitle: form.payload.formContent.description,
         contentDescription: form.payload.formContent.fieldSets[0].fields[0].label.en,
         formCode: form.payload.formContent.fieldSets[0].fields[1].code
@@ -34,7 +36,8 @@ module.exports = [{
   options: {
     validate: {
       payload: Joi.object({
-        CONFIRM_ELIGIBILITY_TO_APPLY: Joi.string().required()
+        CONFIRM_ELIGIBILITY_TO_APPLY: Joi.string().required(),
+        applicationId: Joi.string().required()
       }),
       failAction: async (request, h, _error) => {
         return h.redirect('/confirm-management-control', {
@@ -44,7 +47,9 @@ module.exports = [{
     }
   },
   handler: async (request, h) => {
-    await Wreck.post('http://ffc-tcg-api-gateway:3004/forms/submit/CONFIRM_ELIGIBILITY_TO_APPLY/142', WRECK_OPTIONS({ ...request.payload }))
-    return h.redirect('/agreement-name')
+    const applicationId = request.payload.applicationId
+    const CONFIRM_ELIGIBILITY_TO_APPLY = request.payload.CONFIRM_ELIGIBILITY_TO_APPLY
+    await Wreck.post(`http://ffc-tcg-api-gateway:3004/forms/submit/CONFIRM_ELIGIBILITY_TO_APPLY/${applicationId}`, WRECK_OPTIONS({ CONFIRM_ELIGIBILITY_TO_APPLY }))
+    return h.redirect(`/agreement-name?id=${applicationId}`)
   }
 }]

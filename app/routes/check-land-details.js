@@ -11,10 +11,12 @@ module.exports = [{
   path: '/check-land-details',
   options: { auth: { strategy: 'jwt', scope: [USER] } },
   handler: async (request, h) => {
+    const applicationId = request.query.id
     if (request.auth.isAuthenticated) {
-      const form = await Wreck.get('http://ffc-tcg-api-gateway:3004/forms/CHECK_AND_CONFIRM_LAND_DETAILS/142', WRECK_OPTIONS())
+      const form = await Wreck.get(`http://ffc-tcg-api-gateway:3004/forms/CHECK_AND_CONFIRM_LAND_DETAILS/${applicationId}`, WRECK_OPTIONS())
 
       return h.view('eligibility/check-land-details', {
+        applicationId,
         contentTitle: form.payload.formContent.description,
         contentDescription: form.payload.formContent.fieldSets[0].fields[0].label.en,
         formCode: form.payload.formContent.fieldSets[0].fields[1].code
@@ -34,7 +36,8 @@ module.exports = [{
   options: {
     validate: {
       payload: Joi.object({
-        IS_LAND_UPTODATE: Joi.string().required()
+        IS_LAND_UPTODATE: Joi.string().required(),
+        applicationId: Joi.string().required()
       }),
       failAction: async (request, h, _error) => {
         return h.redirect('/check-land-details', {
@@ -44,10 +47,9 @@ module.exports = [{
     }
   },
   handler: async (request, h) => {
-    const payload = {
-      ...request.payload
-    }
-    await Wreck.post('http://ffc-tcg-api-gateway:3004/forms/submit/CHECK_AND_CONFIRM_LAND_DETAILS/142', WRECK_OPTIONS(payload))
-    return h.redirect('/confirm-management-control')
+    const applicationId = request.payload.applicationId
+    const IS_LAND_UPTODATE = request.payload.IS_LAND_UPTODATE
+    await Wreck.post(`http://ffc-tcg-api-gateway:3004/forms/submit/CHECK_AND_CONFIRM_LAND_DETAILS/${applicationId}`, WRECK_OPTIONS({ IS_LAND_UPTODATE }))
+    return h.redirect(`/confirm-management-control?id=${applicationId}`)
   }
 }]
