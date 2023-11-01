@@ -1,4 +1,5 @@
 const { TCG_TEMP_AUTH } = require('./cookies')
+
 const WRECK_OPTIONS = (payload) => {
   return {
     headers: {
