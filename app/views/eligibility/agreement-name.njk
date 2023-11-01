@@ -1,0 +1,70 @@
+{% extends '_layout.njk' %}
+{# {% set mainClasses = "govuk-main-wrapper--auto-spacing" %} #}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+
+{% block beforeContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+      {{ govukBackLink({
+        text: "Back",
+        href: "/task-list",
+        attributes: {
+          id: "back"
+        }
+        }) 
+      }}
+    </div>
+    <div class="govuk-grid-column-one-half">
+      {# {% include "save/save.njk" %} #}
+    </div>
+  </div>
+{% endblock %}
+
+{% block content %}
+  {# {% if model.error %}
+      {{ govukErrorSummary(model.error) }}
+    {% endif %} #}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h2 class="govuk-heading-l"> {{ contentTitle }}</h2>
+      <p class="govuk-body"> {{ contentDescription }} </p>
+      <form method="POST" action="/agreement-name" novalidate>
+        <input type="hidden" name="crumb" value="{{crumb}}"/>
+
+
+          {{ govukInput({
+            label: {
+              text: "Enter the agreement name for this application",
+              classes: "govuk-fieldset__legend--m govuk-!-padding-top-5",
+              isPageHeading: false
+            },
+            id: "agreement-name",
+            name: "AGREEMENT_NAME"
+          }) }}
+            
+          {{ govukButton({
+            text: "Continue",
+            attributes: {
+              id: "submit"
+            }
+          }) }}
+
+        {% if message %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [
+              {
+                text: "Generic something went wrong"
+              }
+            ]
+          }) }}
+        {% endif %}
+      </form>
+    </div>
+  </div>
+{% endblock %}
