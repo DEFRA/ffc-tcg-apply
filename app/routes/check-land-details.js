@@ -48,6 +48,6 @@ module.exports = [{
       ...request.payload
     }
     await Wreck.post('http://ffc-tcg-api-gateway:3004/forms/submit/CHECK_AND_CONFIRM_LAND_DETAILS/142', WRECK_OPTIONS(payload))
-    return h.redirect('/task-list')
+    return h.redirect('/confirm-management-control')
   }
 }]

@@ -45,6 +45,6 @@ module.exports = [{
   },
   handler: async (request, h) => {
     await Wreck.post('http://ffc-tcg-api-gateway:3004/forms/submit/CONFIRM_ELIGIBILITY_TO_APPLY/142', WRECK_OPTIONS({ ...request.payload }))
-    return h.redirect('/task-list')
+    return h.redirect('/agreement-name')
   }
 }]

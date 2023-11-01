@@ -19,21 +19,19 @@
       <span class="govuk-caption-l">Sustainable Farming Incentive</span>
       <h1 class="govuk-heading-l">Mini Scheme</h1>
 
-      <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Application {{ status.applicationId }} Status: {{ status.processStatusDescription }}</h2>
+      <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Application {{ applicationId }} Status: {{ applicationStatus }}</h2>
       <p class="govuk-body govuk-!-margin-bottom-7">You have completed {{ model.completedSections }} of {{ model.totalSections }} sections.</p>
 
       <ol class="app-task-list">
         <li>
             <h2 class="app-task-list__section">
               <span class="app-task-list__section-number">1. </span>
-              {{ status.forms[0].groups[0].groupName }}
+              {{ section.name }}
             </h2>
              <ul class="app-task-list__items">
-              {% for task in status.forms %}
                 <li class="app-task-list__item">
-                  {{ taskLink(task.formDetails.compileStatus, task.formDetails.formName, task.formDetails.routerUrl) }}
+                  {{ taskLink(section.status, section.name, section.url) }}
                 </li>
-              {% endfor %}
             </ul>
         </li>  
       </ol>
