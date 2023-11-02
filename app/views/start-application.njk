@@ -23,7 +23,7 @@
     <div class="govuk-grid-column-two-thirds">
       <form method="POST" action="/start-application" novalidate>
         <input type="hidden" name="crumb" value="{{crumb}}"/>
-        <input type="hidden" name="sbi" value="{{ organisation.sbi }}"/>
+        <input type="hidden" name="partyId" value="{{ partyId }}"/>
         <div class="govuk-form-group">
           <fieldset class="govuk-fieldset" aria-describedby="contact-hint">
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
@@ -32,7 +32,7 @@
             <div class="govuk-form-group">
               <h2 class="govuk-heading-m">{{ partyName }}</h2>
               <ul class="govuk-list">
-                <li><strong>SBI number:</strong> {{ id }}</li>
+                <li><strong>SBI number:</strong> {{ partyId }}</li>
                 <li><strong>Address:</strong> Parliament Hill Fields, Highgate Rd, Highgate, NW5 1QR</li>
               </ul>
             </div>
