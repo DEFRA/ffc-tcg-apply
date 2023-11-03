@@ -5,7 +5,7 @@
 {% block beforeContent %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-one-half">
-      <a href="{{ model.backLink }}" class="govuk-back-link">Back</a>
+      <a href="/start-application" class="govuk-back-link">Back</a>
     </div>
     <div class="govuk-grid-column-one-half">
       {# {% include "save/save.njk" %} #}
@@ -23,17 +23,22 @@
       <p class="govuk-body govuk-!-margin-bottom-7">You have completed {{ model.completedSections }} of {{ model.totalSections }} sections.</p>
 
       <ol class="app-task-list">
+       {% for formGroup in forms %}
         <li>
             <h2 class="app-task-list__section">
-              <span class="app-task-list__section-number">1. </span>
-              {{ section.name }}
+              <span class="app-task-list__section-number">{{loop.index}}. </span>
+              {{ formGroup.groupName }}
             </h2>
              <ul class="app-task-list__items">
+            {% for form in formGroup.availableForms %}
                 <li class="app-task-list__item">
-                  {{ taskLink(section.status, section.name, section.url) }}
+                  {{ taskLink(form.compileStatus, form.formName, form.url) }}
                 </li>
+        {% endfor %}
             </ul>
-        </li>  
+
+        </li> 
+        {% endfor %}
       </ol>
     </div>
   </div>
