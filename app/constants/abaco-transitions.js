@@ -1,0 +1,6 @@
+module.exports = {
+  ACTION_SELECTION: 'BEFORE_ACTIONS_SELECTION_CHECKS',
+  APPLY: '',
+  REVIEW: '',
+  SUBMIT: ''
+}

@@ -2,9 +2,11 @@ const Joi = require('joi')
 const Wreck = require('@hapi/wreck')
 const { GET, POST } = require('../constants/http-verbs')
 const { WRECK_OPTIONS } = require('../constants/wreck-options')
+const { ACTION_SELECTION } = require('../constants/abaco-transitions')
 const { authConfig } = require('../config')
 const { getAuthorizationUrl } = require('../auth')
 const { USER } = require('../auth/scopes')
+const { transitionApplication } = require('../processing/transition-application')
 
 module.exports = [{
   method: GET,
@@ -50,6 +52,7 @@ module.exports = [{
     const applicationId = request.payload.applicationId
     const AGREEMENT_NAME = request.payload.AGREEMENT_NAME
     await Wreck.post(`http://ffc-tcg-api-gateway:3004/forms/submit/AGREEMENT_NAME/${applicationId}`, WRECK_OPTIONS({ AGREEMENT_NAME }))
+    await transitionApplication(applicationId, ACTION_SELECTION)
     return h.redirect(`/task-list?id=${applicationId}`)
   }
 }]

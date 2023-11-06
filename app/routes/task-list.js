@@ -15,11 +15,13 @@ module.exports = [{
     const applicationId = request.query.id
     if (request.auth.isAuthenticated) {
       const applicationSummary = await Wreck.get(`http://ffc-tcg-api-gateway:3004/applications/status/${applicationId}`, WRECK_OPTIONS())
-
+      const forms = getFormData(applicationSummary.payload.status.forms)
+      const sectionsCompleted = forms.filter(form => form.availableForms.compileStatus === 'COMPLETED')
       return h.view('task-list', {
         applicationId: applicationSummary.payload.status.applicationId,
         applicationStatus: applicationSummary.payload.status.processStatusDescription,
-        forms: getFormData(applicationSummary.payload.status.forms)
+        forms,
+        sectionsCompleted
       })
     }
     if (authConfig.defraIdEnabled) {
