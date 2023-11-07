@@ -1,0 +1,74 @@
+{% extends '_layout.njk' %}
+{# {% set mainClasses = "govuk-main-wrapper--auto-spacing" %} #}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+
+{% block beforeContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+      {{ govukBackLink({
+        text: "Back",
+        href: "/task-list",
+        attributes: {
+          id: "back"
+        }
+        }) 
+      }}
+    </div>
+    <div class="govuk-grid-column-one-half">
+      {# {% include "save/save.njk" %} #}
+    </div>
+  </div>
+{% endblock %}
+
+{% block content %}
+  {# {% if model.error %}
+      {{ govukErrorSummary(model.error) }}
+    {% endif %} #}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h2 class="govuk-heading-l"> What actions do you want to apply for?</h2>
+      <p class="govuk-body">  Choose all that apply.  </p>
+      <form method="POST" action="/action-selection" novalidate>
+        <input type="hidden" name="crumb" value="{{crumb}}"/>
+        <input type="hidden" name="applicationId" value="{{applicationId}}"/>
+          <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+            {% for action in availableActions %}
+            <div class="govuk-checkboxes__item">
+              <input class="govuk-checkboxes__input" id="{{action.prizeCode}}" name="{{action.prizeCode}}" type="checkbox" value="true">
+              <label class="govuk-label govuk-checkboxes__label" for="{{action.prizeCode}}">
+                {{action.prizeTitle}}
+              </label>
+            </div>
+              {% endfor %}
+            </div>
+
+
+           
+
+          {{ govukButton({
+            text: "Continue",
+            attributes: {
+              id: "submit",
+              class: "govuk-!-padding-top-5"
+            }
+          }) }}
+
+        {% if message %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [
+              {
+                text: "Generic something went wrong"
+              }
+            ]
+          }) }}
+        {% endif %}
+      </form>
+    </div>
+  </div>
+{% endblock %}

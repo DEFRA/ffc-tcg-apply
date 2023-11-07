@@ -13,7 +13,8 @@ const routes = [].concat(
   require('../routes/check-eligibility'),
   require('../routes/confirm-management-control'),
   require('../routes/agreement-name'),
-  require('../routes/process-eligibility')
+  require('../routes/process-eligibility'),
+  require('../routes/action-selection')
 )
 
 module.exports = {
