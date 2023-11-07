@@ -2,6 +2,7 @@
 const Wreck = require('@hapi/wreck')
 const { GET } = require('../constants/http-verbs')
 const { WRECK_OPTIONS } = require('../constants/wreck-options')
+const { PARTY_ID } = require('../constants/party-id')
 const { authConfig } = require('../config')
 const { getAuthorizationUrl } = require('../auth')
 const { USER } = require('../auth/scopes')
@@ -12,8 +13,8 @@ module.exports = [{
   options: { auth: { strategy: 'jwt', scope: [USER] } },
   handler: async (request, h) => {
     if (request.auth.isAuthenticated) {
-      const partyDetails = await Wreck.get('http://ffc-tcg-api-gateway:3004/parties/389409', WRECK_OPTIONS())
-      const eligibleOrgaisations = await Wreck.get('http://ffc-tcg-api-gateway:3004/applications/summary/389409', WRECK_OPTIONS())
+      const partyDetails = await Wreck.get(`http://ffc-tcg-api-gateway:3004/parties/${PARTY_ID}`, WRECK_OPTIONS())
+      const eligibleOrgaisations = await Wreck.get(`http://ffc-tcg-api-gateway:3004/applications/summary/${PARTY_ID}`, WRECK_OPTIONS())
 
       return h.view('eligible-organisations', {
         id: partyDetails.payload.id,
