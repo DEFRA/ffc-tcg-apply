@@ -5,21 +5,23 @@ const { WRECK_OPTIONS } = require('../constants/wreck-options')
 const { authConfig } = require('../config')
 const { getAuthorizationUrl } = require('../auth')
 const { USER } = require('../auth/scopes')
-const { mapActionSelections } = require('../processing/map-action-selections')
-const { transitionApplication } = require('../processing/transition-application')
-const { APPLY } = require('../constants/abaco-transitions')
 
 module.exports = [{
   method: GET,
-  path: '/action-selection',
+  path: '/apply-for-sfi-actions/{actionCode}',
   options: { auth: { strategy: 'jwt', scope: [USER] } },
   handler: async (request, h) => {
     if (request.auth.isAuthenticated) {
       const applicationId = request.query.id
-      const availableActions = await Wreck.get(`http://ffc-tcg-api-gateway:3004/actions/${applicationId}`, WRECK_OPTIONS())
-      return h.view('actions/available-actions', {
+      const actionCode = request.params.actionCode
+      const data = await Wreck.get(`http://ffc-tcg-api-gateway:3004/actions/${applicationId}/${actionCode}`, WRECK_OPTIONS())
+
+      return h.view('actions/apply-for-sfi-actions', {
         applicationId,
-        availableActions: availableActions.payload
+        actionCode,
+        heading: data.payload.content[0].optionDescription.split(' - ')[1],
+        content: data.payload.content[0],
+        parcels: data.payload.parcels.slice(0, 5)
       })
     }
     if (authConfig.defraIdEnabled) {
@@ -32,7 +34,7 @@ module.exports = [{
 },
 {
   method: POST,
-  path: '/action-selection',
+  path: '/apply-for-sfi-actions',
   options: {
     validate: {
       payload: Joi.object(),
@@ -44,13 +46,8 @@ module.exports = [{
     }
   },
   handler: async (request, h) => {
-    // TODO transition the application to actions election state if it is not in that state
-    const { applicationId } = request.payload
-    delete request.payload.applicationId
-    const mappedActions = mapActionSelections(request.payload)
-    console.log(mappedActions)
-    await Wreck.post(`http://ffc-tcg-api-gateway:3004/actions/${applicationId}`, WRECK_OPTIONS({ applicationId, mappedActions }))
-    await transitionApplication(applicationId, APPLY)
+    const { applicationId, actionCode } = request.payload
+    await Wreck.post('http://ffc-tcg-api-gateway:3004/actions/submit', WRECK_OPTIONS({ applicationId, actionCode }))
     return h.redirect(`/task-list?id=${applicationId}`)
   }
 }]

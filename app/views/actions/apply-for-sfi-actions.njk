@@ -1,0 +1,84 @@
+{% extends '_layout.njk' %}
+{# {% set mainClasses = "govuk-main-wrapper--auto-spacing" %} #}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+
+{% block beforeContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+      {{ govukBackLink({
+        text: "Back",
+        href: "/task-list",
+        attributes: {
+          id: "back"
+        }
+        }) 
+      }}
+    </div>
+    <div class="govuk-grid-column-one-half">
+      {# {% include "save/save.njk" %} #}
+    </div>
+  </div>
+{% endblock %}
+
+{% block content %}
+  {# {% if model.error %}
+      {{ govukErrorSummary(model.error) }}
+    {% endif %} #}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h2 class="govuk-heading-l"> {{heading}}</h2>
+      <p class="govuk-body">Select the parcels you want to use.</p>
+      <form method="POST" action="/apply-for-sfi-actions" novalidate>
+        <input type="hidden" name="crumb" value="{{crumb}}"/>
+        <input type="hidden" name="applicationId" value="{{applicationId}}"/>
+        <input type="hidden" name="actionCode" value="{{actionCode}}"/>
+           <div class="govuk-checkboxes__item">
+              <input class="govuk-checkboxes__input" id="" name="selectAll" type="checkbox" value="true">
+              <label class="govuk-label govuk-checkboxes__label" for="">
+                Select all
+              </label>
+               <div id="" class="govuk-hint govuk-checkboxes__hint">
+                {{ content.requestableArea / 10000 }} ha
+              </div>
+            </div>
+           
+           {% for parcel in parcels %}
+            <div class="govuk-checkboxes__item">
+              <input class="govuk-checkboxes__input" id="" name="" type="checkbox" value="">
+              <label class="govuk-label govuk-checkboxes__label" for="">
+                {{ parcel.parcelCode }}
+              </label>
+              <div id="" class="govuk-hint govuk-checkboxes__hint">
+                {{ parcel.cropDescription | title }} <br> {{ parcel.requestableArea / 10000}} ha
+              </div>
+
+            </div>
+              {% endfor %}
+
+          {{ govukButton({
+            text: "Continue",
+            attributes: {
+              id: "submit",
+              class: "govuk-!-padding-top-5"
+            }
+          }) }}
+
+        {% if message %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [
+              {
+                text: "Generic something went wrong"
+              }
+            ]
+          }) }}
+        {% endif %}
+      </form>
+    </div>
+  </div>
+{% endblock %}

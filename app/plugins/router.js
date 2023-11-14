@@ -14,7 +14,8 @@ const routes = [].concat(
   require('../routes/confirm-management-control'),
   require('../routes/agreement-name'),
   require('../routes/process-eligibility'),
-  require('../routes/action-selection')
+  require('../routes/action-selection'),
+  require('../routes/apply-for-sfi-actions')
 )
 
 module.exports = {

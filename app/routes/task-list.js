@@ -15,6 +15,7 @@ module.exports = [{
     const applicationId = request.query.id
     if (request.auth.isAuthenticated) {
       const applicationSummary = await Wreck.get(`http://ffc-tcg-api-gateway:3004/applications/status/${applicationId}`, WRECK_OPTIONS())
+      // TODO - set action links within forms to be dynamic to each action eg /apply-for-sfi-actions/LIG1
       const forms = getFormData(applicationSummary.payload.status.forms)
       const sectionsCompleted = forms.filter(form => form.availableForms.compileStatus === 'COMPLETED')
       return h.view('task-list', {
