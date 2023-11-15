@@ -1,0 +1,134 @@
+{% extends '_layout.njk' %}
+{% set mainClasses = "govuk-main-wrapper--auto-spacing" %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block beforeContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+      <div class="govuk-grid-column-one-half">
+      <a href="/task-list?id={{applicationId}}" class="govuk-back-link">Back</a>
+    </div>
+    </div>
+    <div class="govuk-grid-column-one-half">
+    </div>
+  </div>
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form method="POST" action="/declaration" novalidate>
+        <input type="hidden" name="crumb" value="{{crumb}}"/>
+
+        <h1 class="govuk-heading-l">
+          Check your answers
+        </h1>
+
+        <h2 class="govuk-heading-m">
+          Organisation details
+        </h2>
+        
+        <dl class="govuk-summary-list govuk-!-margin-bottom-8">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              Business 
+            </dt>
+            <dd class="govuk-summary-list__value">
+              <p class="govuk-body">{{data.organisation.businessName}}</p>
+            </dd>
+            <dd class="govuk-summary-list__actions">
+              
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              SBI Number
+            </dt>
+            <dd class="govuk-summary-list__value">
+              <p class="govuk-body">{{data.organisation.sbi}}</p>
+            </dd>
+            <dd class="govuk-summary-list__actions">
+              
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              Land management control
+            </dt>
+            <dd class="govuk-summary-list__value">
+              Yes, I will have management control
+            </dd>
+            <dd class="govuk-summary-list__actions">
+              <a class="govuk-link" href="../management-control">
+                Change<span class="govuk-visually-hidden"> actions</span>
+              </a>
+            </dd>
+          </div>
+        </dl>
+
+        <h2 class="govuk-heading-m">
+          Funding details
+        </h2>
+
+        <dl class="govuk-summary-list govuk-!-margin-bottom-8">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              Funding options chosen
+            </dt>
+            <dd class="govuk-summary-list__value">
+              {% for option in data.funding.options%} {{option}} {%endfor%}
+            </dd>
+            <dd class="govuk-summary-list__actions">
+              <a class="govuk-link" href="../what-funding">
+                Change<span class="govuk-visually-hidden"> actions</span>
+              </a>
+            </dd>
+          </div>
+        </dl>
+
+        <h2 class="govuk-heading-m">
+        Arable and horticultural soil work
+        </h2>
+
+        <dl class="govuk-summary-list govuk-!-margin-bottom-8">
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              Land parcels
+            </dt>
+            <dd class="govuk-summary-list__value">
+              12
+            </dd>
+            <dd class="govuk-summary-list__actions">
+              <a class="govuk-link" href="select-arable-parcels">
+                Change<span class="govuk-visually-hidden"> actions</span>
+              </a>
+            </dd>
+          </div>
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">
+              Total amount of land
+            </dt>
+            <dd class="govuk-summary-list__value">
+              150.73 hectares
+            </dd>
+            <dd class="govuk-summary-list__actions">
+              
+            </dd>
+          </div>
+        </dl>
+
+      {{ govukButton({
+        text: "I agree - send my application",
+        href: "/declaration",
+        attributes: {
+          id: "submit"
+        }
+      }) }}
+
+      </form>
+    </div>
+  </div>
+{% endblock %}

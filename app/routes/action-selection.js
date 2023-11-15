@@ -47,6 +47,7 @@ module.exports = [{
     // TODO transition the application to actions election state if it is not in that state
     const { applicationId } = request.payload
     delete request.payload.applicationId
+    // TODO set actions not selected to false
     const mappedActions = mapActionSelections(request.payload)
     console.log(mappedActions)
     await Wreck.post(`http://ffc-tcg-api-gateway:3004/actions/${applicationId}`, WRECK_OPTIONS({ applicationId, mappedActions }))
