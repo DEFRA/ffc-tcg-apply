@@ -14,11 +14,10 @@ module.exports = [{
   path: '/check-your-answers',
   options: { auth: { strategy: 'jwt', scope: [USER] } },
   handler: async (request, h) => {
-    // TODO transition the application to Review
-    const applicationId = request.query.id
-    await transitionApplication(applicationId, REVIEW)
-    const data = await Wreck.get(`http://ffc-tcg-api-gateway:3004/applications/review/${PARTY_ID}/${applicationId}`, WRECK_OPTIONS())
     if (request.auth.isAuthenticated) {
+      const applicationId = request.query.id
+      await transitionApplication(applicationId, REVIEW)
+      const data = await Wreck.get(`http://ffc-tcg-api-gateway:3004/applications/review/${PARTY_ID}/${applicationId}`, WRECK_OPTIONS())
       return h.view('check-your-answers', {
         applicationId,
         data: data.payload

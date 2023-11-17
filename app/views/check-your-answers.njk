@@ -122,14 +122,9 @@
           </div>
         </dl>
         {%endfor%}
-
-      {{ govukButton({
-        text: "I agree - send my application",
-        href: "/declaration",
-        attributes: {
-          id: "submit"
-        }
-      }) }}
+        <a href="/submit-your-application?id={{applicationId}}" role="button" draggable="false" class="govuk-button" data-module="govuk-button">
+          I agree - send my application
+        </a>
 
       </form>
     </div>
