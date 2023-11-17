@@ -1,0 +1,68 @@
+{% extends '_layout.njk' %}
+{% set mainClasses = "govuk-main-wrapper--auto-spacing" %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block beforeContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+      {{ govukBackLink({
+        text: "Back",
+        href: "/task-list",
+        attributes: {
+          id: "back"
+        }
+        }) 
+      }}
+    </div>
+    <div class="govuk-grid-column-one-half">
+      {# {% include "save/save.njk" %} #}
+    </div>
+  </div>
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form method="POST" action="/submit-your-application" novalidate>
+        <input type="hidden" name="crumb" value="{{crumb}}"/>
+        <input type="hidden" name="applicationId" value="{{applicationId}}"/>
+
+
+        <h1 class="govuk-heading-l">
+          Submit your application 
+        </h1>
+
+        <p class="govuk-body">By submitting the application you confirm that:</p>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>the information you've given is correct </li>
+          <li>you can do the work you have chosen</li>
+        </ul>
+
+        <p class="govuk-body">If you give the wrong information you may: </p>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>be refused funding </li>
+          <li>have to pay money back if you don't correct any errors before you sign your agreement</li>
+          <li>have to wait longer to get an agreement or funding </li>
+        </ul>
+
+        <p class="govuk-body">You will be able make changes to the agreement every 12 months. This may include:</p>
+        <ul class="govuk-list govuk-list--bullet">
+          <li>adding more land </li>
+          <li>agreeing to do more work on the land </li>
+          <li>changing what you do on the land</li>
+        </ul>
+
+        {{ govukButton({
+          text: "Submit my application",
+          attributes: {
+            id: "submit"
+          }
+        }) }}
+
+      </form>
+    </div>
+  </div>
+{% endblock %}

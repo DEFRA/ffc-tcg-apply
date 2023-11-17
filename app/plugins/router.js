@@ -16,7 +16,8 @@ const routes = [].concat(
   require('../routes/process-eligibility'),
   require('../routes/action-selection'),
   require('../routes/apply-for-sfi-actions'),
-  require('../routes/check-your-answers')
+  require('../routes/check-your-answers'),
+  require('../routes/submit-your-application')
 )
 
 module.exports = {

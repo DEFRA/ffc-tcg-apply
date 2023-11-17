@@ -9,10 +9,10 @@ module.exports = {
     auth: { strategy: 'jwt', scope: [USER] },
     validate: {
       query: {
-        referenceNumber: Joi.string().required()
+        id: Joi.string().required()
       },
       failAction: (request, h, error) => {
-        return h.redirect('/')
+        return h.redirect('/').takeover()
       }
     }
   },
