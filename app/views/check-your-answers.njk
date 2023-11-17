@@ -79,7 +79,9 @@
               Funding options chosen
             </dt>
             <dd class="govuk-summary-list__value">
-              {% for option in data.funding.options%} {{option}} {%endfor%}
+              {% for option in data.fundingOptions %} 
+              {{ option.actionName }} <br>
+              {%endfor%}
             </dd>
             <dd class="govuk-summary-list__actions">
               <a class="govuk-link" href="../what-funding">
@@ -88,9 +90,9 @@
             </dd>
           </div>
         </dl>
-
+        {% for option in data.fundingOptions %} 
         <h2 class="govuk-heading-m">
-        Arable and horticultural soil work
+        {{ option.actionName }} 
         </h2>
 
         <dl class="govuk-summary-list govuk-!-margin-bottom-8">
@@ -99,7 +101,7 @@
               Land parcels
             </dt>
             <dd class="govuk-summary-list__value">
-              12
+              {{option.parcels}}
             </dd>
             <dd class="govuk-summary-list__actions">
               <a class="govuk-link" href="select-arable-parcels">
@@ -112,13 +114,14 @@
               Total amount of land
             </dt>
             <dd class="govuk-summary-list__value">
-              150.73 hectares
+              {{option.selectedArea}} ha
             </dd>
             <dd class="govuk-summary-list__actions">
               
             </dd>
           </div>
         </dl>
+        {%endfor%}
 
       {{ govukButton({
         text: "I agree - send my application",

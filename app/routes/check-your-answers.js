@@ -1,11 +1,13 @@
 
 const Wreck = require('@hapi/wreck')
 const { GET } = require('../constants/http-verbs')
-const { authConfig } = require('../config')
-const { getAuthorizationUrl } = require('../auth')
+const { REVIEW } = require('../constants/abaco-transitions')
 const { WRECK_OPTIONS } = require('../constants/wreck-options')
-const { USER } = require('../auth/scopes')
 const { PARTY_ID } = require('../constants/party-id')
+const { getAuthorizationUrl } = require('../auth')
+const { USER } = require('../auth/scopes')
+const { authConfig } = require('../config')
+const { transitionApplication } = require('../processing/transition-application')
 
 module.exports = [{
   method: GET,
@@ -14,6 +16,7 @@ module.exports = [{
   handler: async (request, h) => {
     // TODO transition the application to Review
     const applicationId = request.query.id
+    await transitionApplication(applicationId, REVIEW)
     const data = await Wreck.get(`http://ffc-tcg-api-gateway:3004/applications/review/${PARTY_ID}/${applicationId}`, WRECK_OPTIONS())
     if (request.auth.isAuthenticated) {
       return h.view('check-your-answers', {

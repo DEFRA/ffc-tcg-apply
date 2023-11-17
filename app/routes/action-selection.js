@@ -44,7 +44,7 @@ module.exports = [{
     }
   },
   handler: async (request, h) => {
-    // TODO transition the application to actions election state if it is not in that state
+    // TODO transition the application to action selection state if it is not in that state
     const { applicationId } = request.payload
     delete request.payload.applicationId
     // TODO set actions not selected to false
