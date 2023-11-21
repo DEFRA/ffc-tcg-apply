@@ -5,7 +5,6 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/tag/macro.njk" import govukTag %}
-{# {% from "macros/status.njk" import taskLink %} #}
 
 {% block beforeContent %}
   {{ govukBackLink({
@@ -72,22 +71,12 @@
               </td>
 
               <td class="govuk-table__cell">
-                {% if application.processStatusDescription !== 'Withdrawn' %}
-                  <form method="POST" action="/start-application" novalidate>
-                    <input type="hidden" name="crumb" value="{{ crumb }}"/>
-                    <input type="hidden" name="sbi" value="{{ organisation.sbi }}"/>
-                    <input type="hidden" name="agreementNumber" value="{{ agreement.agreementNumber }}"/>
-                    {# <button class="govuk-button-link govuk-!-font-size-19" data-module="govuk-button">
-                      Continue application
-                    </button> #}
-                  </form>
+                {% if application.processStatusDescription === 'Submitted' %}
+                    <a href="/">View Application</a>
+                {% elif application.processStatusDescription !== 'Withdrawn' %}
                     <a href="/task-list?id={{ application.applicationId }}">Continue Application</a>
-                {% elif agreement.status.status === 'Submitted' %}
-                  <button class="govuk-button-link govuk-!-font-size-19" data-module="govuk-button">
-                    View application
-                  </button>
-                {% endif %}
               </td>
+                {% endif %}
             </tr>
             {% endfor %}
           </tbody>

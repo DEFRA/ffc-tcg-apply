@@ -1,27 +1,24 @@
-
-const Wreck = require('@hapi/wreck')
 const { GET } = require('../constants/http-verbs')
-const { WRECK_OPTIONS } = require('../constants/wreck-options')
 const { authConfig } = require('../config')
 const { getAuthorizationUrl } = require('../auth')
 const { USER } = require('../auth/scopes')
 const { getFormData } = require('../processing/get-form-data')
+const { asyncRetry } = require('../processing/async-retry')
 
 module.exports = [{
   method: GET,
   path: '/task-list',
   options: { auth: { strategy: 'jwt', scope: [USER] } },
   handler: async (request, h) => {
-    const applicationId = request.query.id
     if (request.auth.isAuthenticated) {
-      const applicationSummary = await Wreck.get(`http://ffc-tcg-api-gateway:3004/applications/status/${applicationId}`, WRECK_OPTIONS())
-      // TODO - set action links within forms to be dynamic to each action eg /apply-for-sfi-actions/LIG1
-      const forms = getFormData(applicationSummary.payload.status.forms)
-      // TODO allow for the time it takes application to transition
+      const applicationId = request.query.id
+      const applicationSummary = await asyncRetry({ method: GET, url: `http://ffc-tcg-api-gateway:3004/applications/status/${applicationId}` })
+      const forms = getFormData(applicationSummary.status.forms)
       const sectionsCompleted = forms.filter(form => form.availableForms.compileStatus === 'COMPLETED')
+
       return h.view('task-list', {
-        applicationId: applicationSummary.payload.status.applicationId,
-        applicationStatus: applicationSummary.payload.status.processStatusDescription,
+        applicationId: applicationSummary.status.applicationId,
+        applicationStatus: applicationSummary.status.processStatusDescription,
         forms,
         sectionsCompleted
       })
