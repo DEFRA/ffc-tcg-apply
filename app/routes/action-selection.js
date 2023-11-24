@@ -22,6 +22,7 @@ module.exports = [{
         availableActions: availableActions.payload
       })
     }
+
     if (authConfig.defraIdEnabled) {
       return h.redirect(await getAuthorizationUrl())
     }
@@ -55,3 +56,6 @@ module.exports = [{
     return h.redirect(`/task-list?id=${applicationId}`)
   }
 }]
+
+// TODO fix all backlinks
+// TODO use asyncRetry for all requests

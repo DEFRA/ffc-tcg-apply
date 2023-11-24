@@ -1,15 +1,13 @@
-const Wreck = require('@hapi/wreck')
-const { WRECK_OPTIONS } = require('../constants/wreck-options')
+const { GET, PATCH } = require('../constants/http-verbs')
+const { asyncRetry } = require('../processing/async-retry')
+const { checkTransitionStatus } = require('./check-transition-status')
 
 const transitionApplication = async (applicationId, destination) => {
-  // TODO check if application is transitioning
-
-  // get the abaco transitionId
-  const applicationSummary = await Wreck.get(`http://ffc-tcg-api-gateway:3004/applications/status/${applicationId}`, WRECK_OPTIONS())
-  const destinationCode = applicationSummary.payload.availableTransitions.find(transition => transition.toNode === destination)
-  // check if transition destination is available
+  const applicationSummary = await asyncRetry({ method: GET, url: `http://ffc-tcg-api-gateway:3004/applications/status/${applicationId}` })
+  await checkTransitionStatus(applicationSummary, applicationId)
+  const destinationCode = applicationSummary.availableTransitions.find(transition => transition.toNode === destination)
   if (destinationCode) {
-    await Wreck.patch(`http://ffc-tcg-api-gateway:3004/applications/transition/${applicationId}/${destinationCode.id}`, WRECK_OPTIONS())
+    await asyncRetry({ method: PATCH, url: `http://ffc-tcg-api-gateway:3004/applications/transition/${applicationId}/${destinationCode.id}` })
   }
 }
 
