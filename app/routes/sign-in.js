@@ -8,12 +8,13 @@ module.exports = [{
   method: GET,
   path: '/sign-in',
   handler: async (request, h) => {
+    const redirect = request.query.redirect ?? '/check-eligibility'
     if (request.auth.isAuthenticated) {
       return h.redirect('/eligible-organisations')
     }
 
     if (authConfig.defraIdEnabled) {
-      return h.redirect(await getAuthorizationUrl())
+      return h.redirect(await getAuthorizationUrl(redirect))
     }
 
     return h.view('sign-in')
