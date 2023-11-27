@@ -1,10 +1,9 @@
 const Joi = require('joi')
-const Wreck = require('@hapi/wreck')
 const { GET, POST } = require('../constants/http-verbs')
-const { WRECK_OPTIONS } = require('../constants/wreck-options')
 const { authConfig } = require('../config')
 const { getAuthorizationUrl } = require('../auth')
 const { USER } = require('../auth/scopes')
+const { asyncRetry } = require('../processing/async-retry')
 
 module.exports = [{
   method: GET,
@@ -14,14 +13,14 @@ module.exports = [{
     if (request.auth.isAuthenticated) {
       const applicationId = request.query.id
       const actionCode = request.params.actionCode
-      const data = await Wreck.get(`http://ffc-tcg-api-gateway:3004/actions/${applicationId}/${actionCode}`, WRECK_OPTIONS())
+      const data = await asyncRetry({ method: GET, url: `http://ffc-tcg-api-gateway:3004/actions/${applicationId}/${actionCode}` })
 
       return h.view('actions/apply-for-sfi-actions', {
         applicationId,
         actionCode,
-        heading: data.payload.content[0].optionDescription.split(' - ')[1],
-        content: data.payload.content[0],
-        parcels: data.payload.parcels.slice(0, 5)
+        heading: data.content[0].optionDescription.split(' - ')[1],
+        content: data.content[0],
+        parcels: data.parcels.slice(0, 5)
       })
     }
     if (authConfig.defraIdEnabled) {
@@ -47,7 +46,7 @@ module.exports = [{
   },
   handler: async (request, h) => {
     const { applicationId, actionCode } = request.payload
-    await Wreck.post('http://ffc-tcg-api-gateway:3004/actions/submit', WRECK_OPTIONS({ applicationId, actionCode }))
+    await asyncRetry({ method: POST, url: 'http://ffc-tcg-api-gateway:3004/actions/submit', payload: { applicationId, actionCode } })
     return h.redirect(`/task-list?id=${applicationId}`)
   }
 }]

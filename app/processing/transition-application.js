@@ -6,9 +6,10 @@ const transitionApplication = async (applicationId, destination) => {
   const applicationSummary = await asyncRetry({ method: GET, url: `http://ffc-tcg-api-gateway:3004/applications/status/${applicationId}` })
   await checkTransitionStatus(applicationSummary, applicationId)
   const destinationCode = applicationSummary.availableTransitions.find(transition => transition.toNode === destination)
-  if (destinationCode) {
-    await asyncRetry({ method: PATCH, url: `http://ffc-tcg-api-gateway:3004/applications/transition/${applicationId}/${destinationCode.id}` })
+  if (!destinationCode) {
+    console.log(`No destinationCode found for: ${destinationCode}. Transition is unavailable, application not moved to state ${destination}`)
   }
+  await asyncRetry({ method: PATCH, url: `http://ffc-tcg-api-gateway:3004/applications/transition/${applicationId}/${destinationCode.id}` })
 }
 
 module.exports = { transitionApplication }
