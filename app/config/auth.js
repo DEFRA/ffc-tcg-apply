@@ -8,7 +8,7 @@ const schema = Joi.object().keys({
   clientSecret: Joi.alternatives().conditional('defraIdEnabled', { is: true, then: Joi.string().required(), otherwise: Joi.string().allow('') }),
   serviceId: Joi.alternatives().conditional('defraIdEnabled', { is: true, then: Joi.string().required(), otherwise: Joi.string().allow('') }),
   policy: Joi.alternatives().conditional('defraIdEnabled', { is: true, then: Joi.string().required(), otherwise: Joi.string().allow('') }),
-  redirectUrl: Joi.string().default('http://localhost:3000/sign-in-oidc'),
+  redirectUrl: Joi.string().default('http://localhost:3055/sign-in-oidc'),
   jwtConfig: Joi.object({
     expiryInMinutes: Joi.number().default(60)
   }),
