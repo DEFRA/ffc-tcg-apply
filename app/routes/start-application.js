@@ -57,7 +57,6 @@ module.exports = [{
     }
   },
   handler: async (request, h) => {
-    // TODO fix applictiuon crashing when creating new application
     const partyId = request.payload.partyId
     const application = await asyncRetry({
       method: POST,
