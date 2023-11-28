@@ -42,7 +42,7 @@ module.exports = [{
   },
   handler: async (request, h) => {
     const { applicationId } = request.payload
-    await transitionApplication(applicationId, SUBMIT)
+    await transitionApplication(applicationId, SUBMIT, request.state.tcg_auth_token)
     return h.redirect(`/confirmation?id=${applicationId}`)
   }
 }]

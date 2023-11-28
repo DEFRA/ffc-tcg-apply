@@ -15,7 +15,11 @@ module.exports = [{
   handler: async (request, h) => {
     if (request.auth.isAuthenticated) {
       const applicationId = request.query.id
-      const availableActions = await asyncRetry({ method: GET, url: `http://ffc-tcg-api-gateway:3004/actions/${applicationId}` })
+      const availableActions = await asyncRetry({
+        method: GET,
+        url: `http://ffc-tcg-api-gateway:3004/actions/${applicationId}`,
+        auth: request.state.tcg_auth_token
+      })
 
       return h.view('actions/available-actions', {
         applicationId,
@@ -50,8 +54,13 @@ module.exports = [{
     delete request.payload.applicationId
     // TODO set actions not selected to false
     const mappedActions = mapActionSelections(request.payload)
-    await asyncRetry({ method: POST, url: `http://ffc-tcg-api-gateway:3004/actions/${applicationId}`, payload: { applicationId, mappedActions } })
-    await transitionApplication(applicationId, APPLY)
+    await asyncRetry({
+      method: POST,
+      url: `http://ffc-tcg-api-gateway:3004/actions/${applicationId}`,
+      payload: { applicationId, mappedActions },
+      auth: request.state.tcg_auth_token
+    })
+    await transitionApplication(applicationId, APPLY, request.state.tcg_auth_token)
     return h.redirect(`/task-list?id=${applicationId}`)
   }
 }]

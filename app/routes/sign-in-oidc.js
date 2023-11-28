@@ -27,7 +27,7 @@ module.exports = {
   handler: async (request, h) => {
     const response = await getAccessToken(request.payload.code)
     const state = decodeState(request.payload.state)
-    const redirect = state.redirect ?? '/check-eligibility'
+    const redirect = state.redirect ?? '/eligible-organisations'
     return h.redirect(redirect)
       .state(AUTH_COOKIE_NAME, response.access_token, authConfig.cookieOptions)
       .state(AUTH_REFRESH_COOKIE_NAME, response.refresh_token, authConfig.cookieOptions)

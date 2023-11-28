@@ -12,7 +12,11 @@ module.exports = [{
   handler: async (request, h) => {
     if (request.auth.isAuthenticated) {
       const applicationId = request.query.id
-      const applicationSummary = await asyncRetry({ method: GET, url: `http://ffc-tcg-api-gateway:3004/applications/status/${applicationId}` })
+      const applicationSummary = await asyncRetry({
+        method: GET,
+        url: `http://ffc-tcg-api-gateway:3004/applications/status/${applicationId}`,
+        auth: request.state.tcg_auth_token
+      })
       const forms = getFormData(applicationSummary.status.forms)
       const sectionsCompleted = forms.filter(form => form.availableForms.compileStatus === 'COMPLETED')
 

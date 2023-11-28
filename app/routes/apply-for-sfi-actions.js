@@ -13,7 +13,11 @@ module.exports = [{
     if (request.auth.isAuthenticated) {
       const applicationId = request.query.id
       const actionCode = request.params.actionCode
-      const data = await asyncRetry({ method: GET, url: `http://ffc-tcg-api-gateway:3004/actions/${applicationId}/${actionCode}` })
+      const data = await asyncRetry({
+        method: GET,
+        url: `http://ffc-tcg-api-gateway:3004/actions/${applicationId}/${actionCode}`,
+        auth: request.state.tcg_auth_token
+      })
 
       return h.view('actions/apply-for-sfi-actions', {
         applicationId,
@@ -46,7 +50,12 @@ module.exports = [{
   },
   handler: async (request, h) => {
     const { applicationId, actionCode } = request.payload
-    await asyncRetry({ method: POST, url: 'http://ffc-tcg-api-gateway:3004/actions/submit', payload: { applicationId, actionCode } })
+    await asyncRetry({
+      method: POST,
+      url: 'http://ffc-tcg-api-gateway:3004/actions/submit',
+      payload: { applicationId, actionCode },
+      auth: request.state.tcg_auth_token
+    })
     return h.redirect(`/task-list?id=${applicationId}`)
   }
 }]

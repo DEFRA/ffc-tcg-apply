@@ -6,7 +6,7 @@ const asyncRetry = async (options, maxRetries = 5, delay = 5000) => {
 
   while (retries < maxRetries) {
     try {
-      const response = await Wreck.request(options.method, options.url, WRECK_OPTIONS(options.payload))
+      const response = await Wreck.request(options.method, options.url, WRECK_OPTIONS(options.payload, options.auth))
       const payload = await Wreck.read(response, { json: true })
 
       if (response.statusCode >= 200 && response.statusCode < 300) {

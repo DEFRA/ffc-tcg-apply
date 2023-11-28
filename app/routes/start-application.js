@@ -12,9 +12,17 @@ module.exports = [{
   options: { auth: { strategy: 'jwt', scope: [USER] } },
   handler: async (request, h) => {
     if (request.auth.isAuthenticated) {
-      const partyDetails = await asyncRetry({ method: GET, url: `http://ffc-tcg-api-gateway:3004/parties/${PARTY_ID}` })
+      const partyDetails = await asyncRetry({
+        method: GET,
+        url: `http://ffc-tcg-api-gateway:3004/parties/${PARTY_ID}`,
+        auth: request.state.tcg_auth_token
+      })
       // only returns first 10 applications due to AbacoAPI using pagination
-      const eligibleOrgaisations = await asyncRetry({ method: GET, url: `http://ffc-tcg-api-gateway:3004/applications/summary/${PARTY_ID}` })
+      const eligibleOrgaisations = await asyncRetry({
+        method: GET,
+        url: `http://ffc-tcg-api-gateway:3004/applications/summary/${PARTY_ID}`,
+        auth: request.state.tcg_auth_token
+      })
 
       return h.view('start-application',
         {
@@ -51,7 +59,12 @@ module.exports = [{
   handler: async (request, h) => {
     // TODO fix applictiuon crashing when creating new application
     const partyId = request.payload.partyId
-    const application = await await asyncRetry({ method: POST, url: `http://ffc-tcg-api-gateway:3004/applications/create/${partyId}`, payload: { partyId } })
+    const application = await asyncRetry({
+      method: POST,
+      url: `http://ffc-tcg-api-gateway:3004/applications/create/${partyId}`,
+      payload: { partyId },
+      auth: request.state.tcg_auth_token
+    })
     return h.redirect(`/task-list?id=${application.applicationId}`)
   }
 }]

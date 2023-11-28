@@ -14,7 +14,11 @@ module.exports = [{
   handler: async (request, h) => {
     if (request.auth.isAuthenticated) {
       const applicationId = request.query.id
-      const form = await asyncRetry({ method: GET, url: `http://ffc-tcg-api-gateway:3004/forms/AGREEMENT_NAME/${applicationId}` })
+      const form = await asyncRetry({
+        method: GET,
+        url: `http://ffc-tcg-api-gateway:3004/forms/AGREEMENT_NAME/${applicationId}`,
+        auth: request.state.tcg_auth_token
+      })
 
       return h.view('eligibility/agreement-name', {
         applicationId,
@@ -50,8 +54,13 @@ module.exports = [{
   handler: async (request, h) => {
     const applicationId = request.payload.applicationId
     const AGREEMENT_NAME = request.payload.AGREEMENT_NAME
-    await asyncRetry({ method: POST, url: `http://ffc-tcg-api-gateway:3004/forms/submit/AGREEMENT_NAME/${applicationId}`, payload: { AGREEMENT_NAME } })
-    await transitionApplication(applicationId, ACTION_SELECTION)
+    await asyncRetry({
+      method: POST,
+      url: `http://ffc-tcg-api-gateway:3004/forms/submit/AGREEMENT_NAME/${applicationId}`,
+      payload: { AGREEMENT_NAME },
+      auth: request.state.tcg_auth_token
+    })
+    await transitionApplication(applicationId, ACTION_SELECTION, request.state.tcg_auth_token)
     return h.redirect(`/task-list?id=${applicationId}`)
   }
 }]

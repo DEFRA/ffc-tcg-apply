@@ -1,9 +1,7 @@
-const { TCG_TEMP_AUTH } = require('./cookies')
-
-const WRECK_OPTIONS = (payload) => {
+const WRECK_OPTIONS = (payload, auth) => {
   return {
     headers: {
-      authorization: `Bearer ${TCG_TEMP_AUTH}`
+      authorization: `Bearer ${auth}`
     },
     rejectUnauthorized: false,
     json: true,

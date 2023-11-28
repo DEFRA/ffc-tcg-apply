@@ -8,7 +8,7 @@ module.exports = [{
   method: GET,
   path: '/sign-in',
   handler: async (request, h) => {
-    const redirect = request.query.redirect ?? '/check-eligibility'
+    const redirect = request.query.redirect ?? '/eligible-organisations'
     if (request.auth.isAuthenticated) {
       return h.redirect('/eligible-organisations')
     }
