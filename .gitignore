@@ -6,3 +6,4 @@ helm/**/*.lock
 .env
 dist
 _layout.njk
+.ssl

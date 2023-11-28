@@ -1,24 +1,26 @@
 const Joi = require('joi')
 const { GET, POST } = require('../constants/http-verbs')
+const { ACTION_SELECTION } = require('../constants/abaco-transitions')
 const { authConfig } = require('../config')
 const { getAuthorizationUrl } = require('../auth')
 const { USER } = require('../auth/scopes')
+const { transitionApplication } = require('../processing/transition-application')
 const { asyncRetry } = require('../processing/async-retry')
 
 module.exports = [{
   method: GET,
-  path: '/check-eligibility',
+  path: '/agreement-name',
   options: { auth: { strategy: 'jwt', scope: [USER] } },
   handler: async (request, h) => {
-    const applicationId = request.query.id
     if (request.auth.isAuthenticated) {
+      const applicationId = request.query.id
       const form = await asyncRetry({
         method: GET,
-        url: `http://ffc-tcg-api-gateway:3004/forms/CHECK_AND_CONFIRM_LAND_DETAILS/${applicationId}`,
+        url: `http://ffc-tcg-api-gateway:3004/forms/AGREEMENT_NAME/${applicationId}`,
         auth: request.state.tcg_auth_token
       })
 
-      return h.view('eligibility/check-land-details', {
+      return h.view('eligibility/agreement-name', {
         applicationId,
         contentTitle: form.formContent.description,
         contentDescription: form.formContent.fieldSets[0].fields[0].label.en,
@@ -35,15 +37,15 @@ module.exports = [{
 },
 {
   method: POST,
-  path: '/check-eligibility',
+  path: '/agreement-name',
   options: {
     validate: {
       payload: Joi.object({
-        IS_LAND_UPTODATE: Joi.string().required(),
+        AGREEMENT_NAME: Joi.string().required(),
         applicationId: Joi.string().required()
       }),
       failAction: async (request, h, _error) => {
-        return h.redirect('/check-land-details', {
+        return h.redirect('/agreement-name', {
           message: 'You must select an option'
         }).takeover()
       }
@@ -51,14 +53,14 @@ module.exports = [{
   },
   handler: async (request, h) => {
     const applicationId = request.payload.applicationId
-    const IS_LAND_UPTODATE = request.payload.IS_LAND_UPTODATE
+    const AGREEMENT_NAME = request.payload.AGREEMENT_NAME
     await asyncRetry({
       method: POST,
-      url: `http://ffc-tcg-api-gateway:3004/forms/submit/CHECK_AND_CONFIRM_LAND_DETAILS/${applicationId}`,
-      payload: { IS_LAND_UPTODATE },
+      url: `http://ffc-tcg-api-gateway:3004/forms/submit/AGREEMENT_NAME/${applicationId}`,
+      payload: { AGREEMENT_NAME },
       auth: request.state.tcg_auth_token
     })
-
-    return h.redirect(`/confirm-management-control?id=${applicationId}`)
+    await transitionApplication(applicationId, ACTION_SELECTION, request.state.tcg_auth_token)
+    return h.redirect(`/task-list?id=${applicationId}`)
   }
 }]

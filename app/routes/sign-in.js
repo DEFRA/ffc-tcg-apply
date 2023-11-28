@@ -8,12 +8,13 @@ module.exports = [{
   method: GET,
   path: '/sign-in',
   handler: async (request, h) => {
+    const redirect = request.query.redirect ?? '/eligible-organisations'
     if (request.auth.isAuthenticated) {
-      return h.redirect('/check-eligibility')
+      return h.redirect('/eligible-organisations')
     }
 
     if (authConfig.defraIdEnabled) {
-      return h.redirect(await getAuthorizationUrl())
+      return h.redirect(await getAuthorizationUrl(redirect))
     }
 
     return h.view('sign-in')
@@ -41,7 +42,7 @@ module.exports = [{
       return h.redirect('/sign-in')
     }
     const token = await getAccessToken(request.payload.crn, request.payload.password)
-    return h.redirect('/check-eligibility')
+    return h.redirect('/eligible-organisations')
       .state(AUTH_COOKIE_NAME, token, authConfig.cookieOptions)
   }
 }]

@@ -1,0 +1,82 @@
+{% extends '_layout.njk' %}
+{# {% set mainClasses = "govuk-main-wrapper--auto-spacing" %} #}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+
+{% block beforeContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+      {{ govukBackLink({
+        text: "Back",
+        href: "/task-list",
+        attributes: {
+          id: "back"
+        }
+        }) 
+      }}
+    </div>
+    <div class="govuk-grid-column-one-half">
+      {# {% include "save/save.njk" %} #}
+    </div>
+  </div>
+{% endblock %}
+
+{% block content %}
+  {# {% if model.error %}
+      {{ govukErrorSummary(model.error) }}
+    {% endif %} #}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h2 class="govuk-heading-l"> {{ contentTitle }}</h2>
+      <p class="govuk-body"> {{ contentDescription }} </p>
+      <form method="POST" action="/confirm-management-control" novalidate>
+        <input type="hidden" name="crumb" value="{{crumb}}"/>
+        <input type="hidden" name="applicationId" value="{{applicationId}}"/>
+
+
+            {{ govukRadios({
+              name: "CONFIRM_ELIGIBILITY_TO_APPLY",
+              fieldset: {
+                legend: {
+                  text: "Will you have management control of the land in your SFI application?",
+                  isPageHeading: false,
+                  classes: "govuk-fieldset__legend--m govuk-!-padding-top-5"
+                }
+              },
+              items: [
+                {
+                  value: "Y",
+                  text: "Yes"
+                },
+                {
+                  value: "N",
+                  text: "No"
+                }
+              ]
+            }) }}
+
+          {{ govukButton({
+            text: "Continue",
+            attributes: {
+              id: "submit"
+            }
+          }) }}
+
+        {% if message %}
+          {{ govukErrorSummary({
+            titleText: "There is a problem",
+            errorList: [
+              {
+                text: "Generic something went wrong"
+              }
+            ]
+          }) }}
+        {% endif %}
+      </form>
+    </div>
+  </div>
+{% endblock %}

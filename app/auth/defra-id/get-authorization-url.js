@@ -1,13 +1,17 @@
 const { authConfig } = require('../../config')
 const { getWellKnown } = require('./get-well-known')
+const { createState } = require('./create-state')
 
-const getAuthorizationUrl = async () => {
+const getAuthorizationUrl = async (redirect) => {
   const { authorization_endpoint: url } = await getWellKnown()
+
+  const state = createState(redirect)
 
   const query = [
     `p=${authConfig.policy}`,
     `client_id=${authConfig.clientId}`,
     `serviceId=${authConfig.serviceId}`,
+    `state=${state}`,
     'nonce=defaultNonce',
     `redirect_uri=${authConfig.redirectUrl}`,
     `scope=openid offline_access ${authConfig.clientId}`,

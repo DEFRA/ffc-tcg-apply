@@ -4,7 +4,7 @@ const { DEVELOPMENT, TEST, PRODUCTION } = require('../constants/environments')
 const schema = Joi.object().keys({
   port: Joi.number().default(3055),
   env: Joi.string().valid(DEVELOPMENT, TEST, PRODUCTION).default(DEVELOPMENT),
-  serviceName: Joi.string().default('Apply for Sustainable Farming Incentive'),
+  serviceName: Joi.string().default('Apply for the Mini Scheme'),
   cookieOptions: Joi.object({
     ttl: Joi.number().default(1000 * 60 * 60 * 24), // 24 hours
     encoding: Joi.string().valid('base64json').default('base64json'),

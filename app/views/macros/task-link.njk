@@ -1,0 +1,8 @@
+{% from "govuk/components/tag/macro.njk" import govukTag %}
+
+{% macro taskLink(status, linkText, href, applicationId) %}
+  <span class="app-task-list__task-name">
+    <a href="{{href}}?id={{applicationId}}">{{linkText}}</a>
+  </span>
+  <strong class="govuk-tag app-task-list__tag {{ 'govuk-tag--grey' if status !== 'COMPLETED'}} {{ 'govuk-tag--blue' if status === 'IN PROGRESS'}} ">{{status}}</strong>
+{% endmacro %}

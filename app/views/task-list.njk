@@ -1,0 +1,61 @@
+{% extends '_layout.njk' %}
+{# {% set mainClasses = "govuk-main-wrapper--auto-spacing" %} #}
+{% from "macros/task-link.njk" import taskLink %}
+
+{% block beforeContent %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+      <a href="/start-application" class="govuk-back-link">Back</a>
+    </div>
+    <div class="govuk-grid-column-one-half">
+      {# {% include "save/save.njk" %} #}
+    </div>
+  </div>
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <span class="govuk-caption-l">Sustainable Farming Incentive</span>
+      <h1 class="govuk-heading-l">Mini Scheme</h1>
+
+      <h2 class="govuk-heading-s govuk-!-margin-bottom-2">Application {{ applicationId }} Status: {{ applicationStatus }}</h2>
+      <p class="govuk-body govuk-!-margin-bottom-7">You have completed {{ sectionsCompleted.length }} of {{ forms.length }} sections.</p>
+
+      <ol class="app-task-list">
+       {% for formGroup in forms %}
+        <li>
+            <h2 class="app-task-list__section">
+              <span class="app-task-list__section-number">{{loop.index}}. </span>
+              {{ formGroup.groupName }}
+            </h2>
+             <ul class="app-task-list__items">
+            {% for form in formGroup.availableForms %}
+                <li class="app-task-list__item">
+                  {{ taskLink(form.compileStatus, form.formName, form.url, applicationId) }}
+                </li>
+        {% endfor %}
+            </ul>
+
+        </li> 
+        {% endfor %}
+      </ol>
+    </div>
+  </div>
+{% endblock %}
+
+        {# {% for section in model.sections %}
+          <li>
+            <h2 class="app-task-list__section">
+              <span class="app-task-list__section-number">{{loop.index}}. </span>
+              {{ section.name }}
+            </h2>
+            <ul class="app-task-list__items">
+              {% for task in section.tasks %}
+                <li class="app-task-list__item">
+                  {{ taskLink(task.status, task.name, task.url) }}
+                </li>
+              {% endfor %}
+            </ul>
+          </li>
+        {% endfor %} #}
