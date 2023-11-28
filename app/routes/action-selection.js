@@ -1,7 +1,7 @@
 const Joi = require('joi')
 const { GET, POST } = require('../constants/http-verbs')
 const { APPLY } = require('../constants/abaco-transitions')
-const { authConfig } = require('../config')
+const { authConfig, serverConfig } = require('../config')
 const { getAuthorizationUrl } = require('../auth')
 const { USER } = require('../auth/scopes')
 const { mapActionSelections } = require('../processing/map-action-selections')
@@ -17,7 +17,7 @@ module.exports = [{
       const applicationId = request.query.id
       const availableActions = await asyncRetry({
         method: GET,
-        url: `http://ffc-tcg-api-gateway:3004/actions/${applicationId}`,
+        url: `${serverConfig.apiEndpoint}/actions/${applicationId}`,
         auth: request.state.tcg_auth_token
       })
 
@@ -56,7 +56,7 @@ module.exports = [{
     const mappedActions = mapActionSelections(request.payload)
     await asyncRetry({
       method: POST,
-      url: `http://ffc-tcg-api-gateway:3004/actions/${applicationId}`,
+      url: `${serverConfig.apiEndpoint}/actions/${applicationId}`,
       payload: { applicationId, mappedActions },
       auth: request.state.tcg_auth_token
     })

@@ -3,7 +3,7 @@ const { REVIEW } = require('../constants/abaco-transitions')
 const { PARTY_ID } = require('../constants/party-id')
 const { getAuthorizationUrl } = require('../auth')
 const { USER } = require('../auth/scopes')
-const { authConfig } = require('../config')
+const { authConfig, serverConfig } = require('../config')
 const { transitionApplication } = require('../processing/transition-application')
 const { asyncRetry } = require('../processing/async-retry')
 
@@ -17,7 +17,7 @@ module.exports = [{
       await transitionApplication(applicationId, REVIEW, request.state.tcg_auth_token)
       const data = await asyncRetry({
         method: GET,
-        url: `http://ffc-tcg-api-gateway:3004/applications/review/${PARTY_ID}/${applicationId}`,
+        url: `${serverConfig.apiEndpoint}/applications/review/${PARTY_ID}/${applicationId}`,
         auth: request.state.tcg_auth_token
       })
 

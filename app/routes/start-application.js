@@ -1,7 +1,7 @@
 const Joi = require('joi')
 const { GET, POST } = require('../constants/http-verbs')
 const { PARTY_ID } = require('../constants/party-id')
-const { authConfig } = require('../config')
+const { authConfig, serverConfig } = require('../config')
 const { getAuthorizationUrl } = require('../auth')
 const { USER } = require('../auth/scopes')
 const { asyncRetry } = require('../processing/async-retry')
@@ -14,13 +14,13 @@ module.exports = [{
     if (request.auth.isAuthenticated) {
       const partyDetails = await asyncRetry({
         method: GET,
-        url: `http://ffc-tcg-api-gateway:3004/parties/${PARTY_ID}`,
+        url: `${serverConfig.apiEndpoint}/parties/${PARTY_ID}`,
         auth: request.state.tcg_auth_token
       })
       // only returns first 10 applications due to AbacoAPI using pagination
       const eligibleOrgaisations = await asyncRetry({
         method: GET,
-        url: `http://ffc-tcg-api-gateway:3004/applications/summary/${PARTY_ID}`,
+        url: `${serverConfig.apiEndpoint}/applications/summary/${PARTY_ID}`,
         auth: request.state.tcg_auth_token
       })
 
@@ -60,7 +60,7 @@ module.exports = [{
     const partyId = request.payload.partyId
     const application = await asyncRetry({
       method: POST,
-      url: `http://ffc-tcg-api-gateway:3004/applications/create/${partyId}`,
+      url: `${serverConfig.apiEndpoint}/applications/create/${partyId}`,
       payload: { partyId },
       auth: request.state.tcg_auth_token
     })

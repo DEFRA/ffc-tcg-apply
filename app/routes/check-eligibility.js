@@ -1,6 +1,6 @@
 const Joi = require('joi')
 const { GET, POST } = require('../constants/http-verbs')
-const { authConfig } = require('../config')
+const { authConfig, serverConfig } = require('../config')
 const { getAuthorizationUrl } = require('../auth')
 const { USER } = require('../auth/scopes')
 const { asyncRetry } = require('../processing/async-retry')
@@ -14,7 +14,7 @@ module.exports = [{
     if (request.auth.isAuthenticated) {
       const form = await asyncRetry({
         method: GET,
-        url: `http://ffc-tcg-api-gateway:3004/forms/CHECK_AND_CONFIRM_LAND_DETAILS/${applicationId}`,
+        url: `${serverConfig.apiEndpoint}/forms/CHECK_AND_CONFIRM_LAND_DETAILS/${applicationId}`,
         auth: request.state.tcg_auth_token
       })
 
@@ -54,7 +54,7 @@ module.exports = [{
     const IS_LAND_UPTODATE = request.payload.IS_LAND_UPTODATE
     await asyncRetry({
       method: POST,
-      url: `http://ffc-tcg-api-gateway:3004/forms/submit/CHECK_AND_CONFIRM_LAND_DETAILS/${applicationId}`,
+      url: `${serverConfig.apiEndpoint}/forms/submit/CHECK_AND_CONFIRM_LAND_DETAILS/${applicationId}`,
       payload: { IS_LAND_UPTODATE },
       auth: request.state.tcg_auth_token
     })

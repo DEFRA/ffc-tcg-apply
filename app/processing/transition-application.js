@@ -1,11 +1,12 @@
 const { GET, PATCH } = require('../constants/http-verbs')
+const { serverConfig } = require('../config')
 const { asyncRetry } = require('../processing/async-retry')
 const { checkTransitionStatus } = require('./check-transition-status')
 
 const transitionApplication = async (applicationId, destination, authToken) => {
   const applicationSummary = await asyncRetry({
     method: GET,
-    url: `http://ffc-tcg-api-gateway:3004/applications/status/${applicationId}`,
+    url: `${serverConfig.apiEndpoint}/applications/status/${applicationId}`,
     auth: authToken
   })
   await checkTransitionStatus(applicationSummary, applicationId, authToken)
@@ -17,7 +18,7 @@ const transitionApplication = async (applicationId, destination, authToken) => {
 
   await asyncRetry({
     method: PATCH,
-    url: `http://ffc-tcg-api-gateway:3004/applications/transition/${applicationId}/${destinationCode.id}`,
+    url: `${serverConfig.apiEndpoint}/applications/transition/${applicationId}/${destinationCode.id}`,
     auth: authToken
   })
 }

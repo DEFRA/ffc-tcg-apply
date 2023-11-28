@@ -1,6 +1,6 @@
 const Joi = require('joi')
 const { GET, POST } = require('../constants/http-verbs')
-const { authConfig } = require('../config')
+const { authConfig, serverConfig } = require('../config')
 const { getAuthorizationUrl } = require('../auth')
 const { USER } = require('../auth/scopes')
 const { asyncRetry } = require('../processing/async-retry')
@@ -15,7 +15,7 @@ module.exports = [{
       const actionCode = request.params.actionCode
       const data = await asyncRetry({
         method: GET,
-        url: `http://ffc-tcg-api-gateway:3004/actions/${applicationId}/${actionCode}`,
+        url: `${serverConfig.apiEndpoint}/actions/${applicationId}/${actionCode}`,
         auth: request.state.tcg_auth_token
       })
 
@@ -52,7 +52,7 @@ module.exports = [{
     const { applicationId, actionCode } = request.payload
     await asyncRetry({
       method: POST,
-      url: 'http://ffc-tcg-api-gateway:3004/actions/submit',
+      url: `${serverConfig.apiEndpoint}/actions/submit`,
       payload: { applicationId, actionCode },
       auth: request.state.tcg_auth_token
     })

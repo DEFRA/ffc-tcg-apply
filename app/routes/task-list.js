@@ -1,5 +1,5 @@
 const { GET } = require('../constants/http-verbs')
-const { authConfig } = require('../config')
+const { authConfig, serverConfig } = require('../config')
 const { getAuthorizationUrl } = require('../auth')
 const { USER } = require('../auth/scopes')
 const { getFormData } = require('../processing/get-form-data')
@@ -14,7 +14,7 @@ module.exports = [{
       const applicationId = request.query.id
       const applicationSummary = await asyncRetry({
         method: GET,
-        url: `http://ffc-tcg-api-gateway:3004/applications/status/${applicationId}`,
+        url: `${serverConfig.apiEndpoint}/applications/status/${applicationId}`,
         auth: request.state.tcg_auth_token
       })
       const forms = getFormData(applicationSummary.status.forms)

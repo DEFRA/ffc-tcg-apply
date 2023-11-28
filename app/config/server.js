@@ -5,6 +5,7 @@ const schema = Joi.object().keys({
   port: Joi.number().default(3055),
   env: Joi.string().valid(DEVELOPMENT, TEST, PRODUCTION).default(DEVELOPMENT),
   serviceName: Joi.string().default('Apply for the Mini Scheme'),
+  apiEndpoint: Joi.string(),
   cookieOptions: Joi.object({
     ttl: Joi.number().default(1000 * 60 * 60 * 24), // 24 hours
     encoding: Joi.string().valid('base64json').default('base64json'),
@@ -20,6 +21,7 @@ const config = {
   port: process.env.PORT,
   env: process.env.NODE_ENV,
   serviceName: process.env.SERVICE_NAME,
+  apiEndpoint: process.env.API_ENDPOINT,
   cookieOptions: {
     ttl: process.env.COOKIE_TTL,
     encoding: process.env.COOKIE_ENCODING,

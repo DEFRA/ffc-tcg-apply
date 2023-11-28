@@ -1,6 +1,6 @@
 const Joi = require('joi')
 const { GET, POST } = require('../constants/http-verbs')
-const { authConfig } = require('../config')
+const { authConfig, serverConfig } = require('../config')
 const { getAuthorizationUrl } = require('../auth')
 const { USER } = require('../auth/scopes')
 const { asyncRetry } = require('../processing/async-retry')
@@ -14,7 +14,7 @@ module.exports = [{
       const applicationId = request.query.id
       const form = await asyncRetry({
         method: GET,
-        url: `http://ffc-tcg-api-gateway:3004/forms/CONFIRM_ELIGIBILITY_TO_APPLY/${applicationId}`,
+        url: `${serverConfig.apiEndpoint}/forms/CONFIRM_ELIGIBILITY_TO_APPLY/${applicationId}`,
         auth: request.state.tcg_auth_token
       })
 
@@ -54,7 +54,7 @@ module.exports = [{
     const CONFIRM_ELIGIBILITY_TO_APPLY = request.payload.CONFIRM_ELIGIBILITY_TO_APPLY
     await asyncRetry({
       method: POST,
-      url: `http://ffc-tcg-api-gateway:3004/forms/submit/CONFIRM_ELIGIBILITY_TO_APPLY/${applicationId}`,
+      url: `${serverConfig.apiEndpoint}/forms/submit/CONFIRM_ELIGIBILITY_TO_APPLY/${applicationId}`,
       payload: { CONFIRM_ELIGIBILITY_TO_APPLY },
       auth: request.state.tcg_auth_token
     })
