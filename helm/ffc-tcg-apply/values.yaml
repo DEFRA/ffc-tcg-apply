@@ -39,6 +39,8 @@ container:
   defraIdRedirectUrl: sign-in-oidc
   devAuthPrivateKey:
   devAuthPublicKey:
+  apiEndpoint: https://ffc-tcg-apply
+  sndEndpoint: http://ffc-tcg-api-gateway.ffc-tcg:3004
 
 livenessProbe:
   path: /healthz

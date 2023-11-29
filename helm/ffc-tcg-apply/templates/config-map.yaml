@@ -23,4 +23,10 @@ data:
   {{ else }}
   DEFRA_ID_REDIRECT_URL: https://{{ .Values.ingress.endpoint }}.{{ .Values.ingress.server }}/{{ .Values.container.defraIdRedirectUrl }}
   {{- end }}
+  {{- if and (.Values.environmentCode) (ne (.Values.environmentCode | toString ) "snd") }}
+  API_ENDPOINT: {{ .Values.container.apiEndpoint }}-{{ .Values.environmentCode }}.{{ .Values.ingress.server }}
+  {{ else }}
+  API_ENDPOINT: {{ .Values.container.sndEndpoint }}
+  {{- end }}
+  {{ else }}
 {{- end -}}
