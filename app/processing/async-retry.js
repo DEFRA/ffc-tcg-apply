@@ -6,6 +6,8 @@ const asyncRetry = async (options, maxRetries = 5, delay = 5000) => {
 
   while (retries < maxRetries) {
     try {
+      console.log(options)
+      console.log(WRECK_OPTIONS(options.payload, options.auth))
       const response = await Wreck.request(options.method, options.url, WRECK_OPTIONS(options.payload, options.auth))
       const payload = await Wreck.read(response, { json: true })
 
@@ -15,7 +17,7 @@ const asyncRetry = async (options, maxRetries = 5, delay = 5000) => {
         throw new Error(`Request failed with status code ${response.statusCode}`)
       }
     } catch (error) {
-      console.error(`Error: ${error.message}`, options)
+      console.error(`Error: ${error.message}`)
 
       // Retry after a delay
       await new Promise(resolve => setTimeout(resolve, delay))
