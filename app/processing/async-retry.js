@@ -15,7 +15,7 @@ const asyncRetry = async (options, maxRetries = 5, delay = 5000) => {
         throw new Error(`Request failed with status code ${response.statusCode}`)
       }
     } catch (error) {
-      console.error(`Error: ${error.message}`)
+      console.error(`Error: ${error.message}`, options)
 
       // Retry after a delay
       await new Promise(resolve => setTimeout(resolve, delay))
