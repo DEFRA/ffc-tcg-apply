@@ -40,7 +40,7 @@ container:
   devAuthPrivateKey:
   devAuthPublicKey:
   apiEndpoint: https://ffc-tcg-apply
-  sndEndpoint: http://ffc-tcg-api-gateway.ffc-tcg:3004
+  sndEndpoint: http://ffc-tcg-api-gateway.ffc-tcg
 
 livenessProbe:
   path: /healthz
