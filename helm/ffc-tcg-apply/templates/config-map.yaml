@@ -28,4 +28,7 @@ data:
   {{ else }}
   API_ENDPOINT: {{ .Values.container.sndEndpoint }}
   {{- end }}
+  {{- if (eq (.Values.environmentCode | toString ) "snd") }}
+  NODE_TLS_REJECT_UNAUTHORIZED: "0"
+  {{- end }}
 {{- end -}}
