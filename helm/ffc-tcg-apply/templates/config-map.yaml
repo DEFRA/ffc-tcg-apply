@@ -28,5 +28,4 @@ data:
   {{ else }}
   API_ENDPOINT: {{ .Values.container.sndEndpoint }}
   {{- end }}
-  {{ else }}
 {{- end -}}
