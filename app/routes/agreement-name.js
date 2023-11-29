@@ -1,7 +1,7 @@
 const Joi = require('joi')
 const { GET, POST } = require('../constants/http-verbs')
 const { ACTION_SELECTION } = require('../constants/abaco-transitions')
-const { authConfig } = require('../config')
+const { authConfig, serverConfig } = require('../config')
 const { getAuthorizationUrl } = require('../auth')
 const { USER } = require('../auth/scopes')
 const { transitionApplication } = require('../processing/transition-application')
@@ -16,7 +16,7 @@ module.exports = [{
       const applicationId = request.query.id
       const form = await asyncRetry({
         method: GET,
-        url: `http://ffc-tcg-api-gateway:3004/forms/AGREEMENT_NAME/${applicationId}`,
+        url: `${serverConfig.apiEndpoint}/forms/AGREEMENT_NAME/${applicationId}`,
         auth: request.state.tcg_auth_token
       })
 
@@ -56,7 +56,7 @@ module.exports = [{
     const AGREEMENT_NAME = request.payload.AGREEMENT_NAME
     await asyncRetry({
       method: POST,
-      url: `http://ffc-tcg-api-gateway:3004/forms/submit/AGREEMENT_NAME/${applicationId}`,
+      url: `${serverConfig.apiEndpoint}/forms/submit/AGREEMENT_NAME/${applicationId}`,
       payload: { AGREEMENT_NAME },
       auth: request.state.tcg_auth_token
     })
