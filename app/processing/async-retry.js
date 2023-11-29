@@ -6,8 +6,6 @@ const asyncRetry = async (options, maxRetries = 5, delay = 5000) => {
 
   while (retries < maxRetries) {
     try {
-      console.log(options)
-      console.log(WRECK_OPTIONS(options.payload, options.auth))
       const response = await Wreck.request(options.method, options.url, WRECK_OPTIONS(options.payload, options.auth))
       const payload = await Wreck.read(response, { json: true })
 
