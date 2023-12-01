@@ -12,15 +12,15 @@ const transitionApplication = async (applicationId, destination, authToken) => {
   await checkTransitionStatus(applicationSummary, applicationId, authToken)
   const destinationCode = applicationSummary.availableTransitions.find(transition => transition.toNode === destination)
 
-  if (!destinationCode) {
-    console.log(`No destinationCode found for: ${destinationCode}. Transition is unavailable, application not moved to state ${destination}`)
+  if (destinationCode) {
+    await asyncRetry({
+      method: PATCH,
+      url: `${serverConfig.apiEndpoint}/applications/transition/${applicationId}/${destinationCode.id}`,
+      auth: authToken
+    })
   }
-
-  await asyncRetry({
-    method: PATCH,
-    url: `${serverConfig.apiEndpoint}/applications/transition/${applicationId}/${destinationCode.id}`,
-    auth: authToken
-  })
+  console.log(`Application is in state ${applicationSummary.status.processStatus}`)
+  console.log(`No destinationCode found. Transition is unavailable, application not moved to state ${destination}`)
 }
 
 module.exports = { transitionApplication }
