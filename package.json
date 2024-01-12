@@ -1,6 +1,6 @@
 {
   "name": "ffc-tcg-apply",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "description": "FFC TCG Apply",
   "homepage": "https://github.com/DEFRA/ffc-tcg-apply",
   "main": "app/index.js",
@@ -17,7 +17,10 @@
     "start:nodemon": "nodemon --inspect=0.0.0.0 --ext css,js,njk --legacy-watch app/index.js"
   },
   "author": "Defra",
-  "contributors": [],
+  "contributors": [
+    "Simon Dunn simon.dunn1@defra.gov.uk",
+    "Rana Salem rana.salem@defra.gov.uk"
+  ],
   "license": "OGL-UK-3.0",
   "dependencies": {
     "@hapi/crumb": "9.0.1",
