@@ -28,7 +28,7 @@
     "applicationinsights": "2.3.5",
     "ffc-messaging": "2.7.0",
     "govuk-frontend": "4.7.0",
-    "hapi-auth-jwt2": "10.4.0",
+    "hapi-auth-jwt2": "10.6.0",
     "hapi-pino": "12.1.0",
     "i": "0.3.7",
     "joi": "17.9.2",
