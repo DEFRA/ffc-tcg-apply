@@ -35,7 +35,7 @@
     "jsonwebtoken": "9.0.1",
     "jwk-to-pem": "2.0.5",
     "log-timestamp": "0.3.0",
-    "npm": "9.8.1",
+    "npm": "11.0.0",
     "nunjucks": "3.2.4",
     "uuid": "9.0.0"
   },
